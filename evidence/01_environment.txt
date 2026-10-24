@@ -1,0 +1,18 @@
+===== LAB-01 ENVIRONMENT =====
+Date: Sat Oct 24 10:50:24 AM +07 2026
+
+===== HOST =====
+Linux duy-Precision-7550 7.0.0-34-generic #34-Ubuntu SMP PREEMPT_DYNAMIC Wed Sep  2 14:29:37 UTC 2026 x86_64 GNU/Linux
+
+===== ARM CROSS COMPILER =====
+arm-linux-gnueabihf-gcc-11 (Ubuntu 11.5.0-11ubuntu2) 11.5.0
+/usr/bin/arm-linux-gnueabihf-gcc-11
+
+===== QEMU =====
+QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)
+
+===== MAKE =====
+GNU Make 4.4.1
+
+===== GIT =====
+git version 2.53.0
