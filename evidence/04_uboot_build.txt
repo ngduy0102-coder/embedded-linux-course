@@ -1,0 +1,24 @@
+===== LAB-01 U-BOOT BUILD EVIDENCE =====
+
+===== Version =====
+VERSION = 2022
+PATCHLEVEL = 04
+SUBLEVEL =
+
+===== Target =====
+CONFIG_TARGET_VEXPRESS_CA9X4=y
+
+===== U-Boot files =====
+-rwxrwxr-x 1 duy duy 4.2M Oct 24 11:10 u-boot
+-rwxrwxr-x 1 duy duy 537K Oct 24 11:10 u-boot.bin
+
+u-boot:     ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), static-pie linked, with debug_info, not stripped
+u-boot.bin: DOS executable (COM), start instruction 0xb80000ea 14f09fe5
+
+===== ARM Architecture =====
+  Tag_CPU_arch: v7
+  Tag_CPU_arch_profile: Application
+
+===== Output =====
+-rwxrwxr-x 1 duy duy 4.2M Oct 24 11:11 output/u-boot
+output/u-boot: ELF 32-bit LSB executable, ARM, EABI5 version 1 (SYSV), static-pie linked, with debug_info, not stripped
