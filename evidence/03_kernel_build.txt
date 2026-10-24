@@ -1,0 +1,28 @@
+===== LAB-01 KERNEL BUILD EVIDENCE =====
+
+===== Kernel version =====
+5.15.0
+
+===== ARM Architecture =====
+  Tag_CPU_arch: v7
+  Tag_CPU_arch_profile: Application
+  Tag_ARM_ISA_use: Yes
+  Tag_THUMB_ISA_use: Thumb-2
+  Tag_ABI_PCS_wchar_t: 2
+  Tag_ABI_FP_denormal: Needed
+  Tag_ABI_FP_exceptions: Needed
+  Tag_ABI_FP_number_model: IEEE 754
+  Tag_ABI_align_needed: 8-byte
+  Tag_ABI_enum_size: int
+
+===== Kernel image =====
+-rwxrwxr-x 1 duy duy 4.9M Oct 24 11:02 arch/arm/boot/zImage
+arch/arm/boot/zImage: Linux kernel ARM boot executable zImage (kernel >=v4.15) (little-endian)
+
+===== Device Tree =====
+-rw-rw-r-- 1 duy duy 14K Oct 24 11:00 arch/arm/boot/dts/vexpress-v2p-ca9.dtb
+arch/arm/boot/dts/vexpress-v2p-ca9.dtb: Device Tree Blob version 17, size=14081, boot CPU=0, string block size=917, DT structure block size=13108
+
+===== Output files =====
+-rw-rw-r-- 1 duy duy  14K Oct 24 11:03 output/vexpress-v2p-ca9.dtb
+-rwxrwxr-x 1 duy duy 4.9M Oct 24 11:03 output/zImage
