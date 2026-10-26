@@ -16,11 +16,11 @@
 - [x] Create project workspace
 - [x] Configure Git repository
 - [x] Connect local repository to GitHub
-- [ ] Prepare Linux Kernel
-- [ ] Configure Kernel
-- [ ] Build Kernel
-- [ ] Prepare BusyBox
-- [ ] Create Root Filesystem
-- [ ] Create Initramfs
+- [x] Prepare Linux Kernel
+- [x] Configure Kernel
+- [x] Build Kernel
+- [x] Prepare BusyBox
+- [x] Create Root Filesystem
+- [x] Create Initramfs
 - [ ] Boot Linux on QEMU
 - [ ] Verify LAB-01
