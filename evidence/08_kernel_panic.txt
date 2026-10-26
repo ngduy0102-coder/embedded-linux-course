@@ -1,0 +1,38 @@
+===== LAB-01 KERNEL PANIC EVIDENCE =====
+
+Test:
+Boot Linux kernel without initramfs.
+
+QEMU:
+vexpress-a9
+CPU: Cortex-A9
+Memory: 512M
+Kernel: Linux 5.15.0
+Console: ttyAMA0
+
+===== ERROR =====
+
+VFS: Cannot open root device "ram0" or unknown-block(0,0): error -6
+
+Please append a correct "root=" boot option; here are the available partitions:
+1f00          131072 mtdblock0
+1f01           32768 mtdblock1
+
+Kernel panic - not syncing: VFS: Unable to mount root fs on unknown-block(0,0)
+
+===== ANALYSIS =====
+
+The Linux kernel successfully starts on the QEMU vexpress-a9
+platform, but it cannot mount the configured root filesystem.
+
+The kernel was booted without an initramfs, while the boot arguments
+specify root=/dev/ram0. Therefore, no valid root filesystem is
+available at /dev/ram0 and the kernel enters a VFS kernel panic.
+
+This demonstrates the need for an initramfs/root filesystem before
+starting the userspace init process.
+
+===== RESULT =====
+
+Expected failure reproduced successfully.
+Next step: boot the same kernel with initramfs.cpio.gz.
