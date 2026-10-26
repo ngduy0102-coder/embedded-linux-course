@@ -22,5 +22,5 @@
 - [x] Prepare BusyBox
 - [x] Create Root Filesystem
 - [x] Create Initramfs
-- [ ] Boot Linux on QEMU
-- [ ] Verify LAB-01
+- [x] Boot Linux on QEMU
+- [x] Verify LAB-01
