@@ -1,0 +1,27 @@
+===== LAB-01 BUSYBOX BUILD EVIDENCE =====
+
+BusyBox version:
+1.35.0
+
+Architecture:
+ARMv7-A
+
+Cross compiler:
+arm-linux-gnueabihf-gcc-11
+
+CFLAGS:
+-march=armv7-a -mfpu=neon-vfpv3 -mfloat-abi=hard
+
+Configuration:
+CONFIG_STATIC=y
+CONFIG_STATIC_LIBGCC=y
+# CONFIG_TC is not set
+
+===== BINARY =====
+ELF 32-bit LSB executable, ARM, EABI5
+statically linked
+
+===== ARM ATTRIBUTES =====
+Tag_CPU_arch: v7
+Tag_CPU_arch_profile: Application
+Tag_ABI_VFP_args: VFP registers
