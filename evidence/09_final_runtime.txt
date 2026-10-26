@@ -1,0 +1,55 @@
+===== LAB-01 FINAL RUNTIME EVIDENCE =====
+
+Platform:
+- QEMU vexpress-a9
+- CPU: Cortex-A9
+- Architecture: ARMv7
+- Memory: 512M
+- SMP: 2 CPUs
+- Kernel: Linux 5.15.0
+
+===== UNAME =====
+Linux embedded-lab 5.15.0 #1 SMP Sat Oct 24 11:00:40 +07 2026 armv7l GNU/Linux
+
+===== CPU =====
+processor : 0
+model name : ARMv7 Processor rev 0 (v7l)
+Features : half thumb fastmult vfp edsp neon vfpv3 tls vfpd32
+
+processor : 1
+model name : ARMv7 Processor rev 0 (v7l)
+Features : half thumb fastmult vfp edsp neon vfpv3 tls vfpd32
+
+===== MEMORY =====
+MemTotal: 508288 kB
+MemFree: 493360 kB
+MemAvailable: 490572 kB
+
+===== DEVICES =====
+/dev/console
+/dev/null
+/dev/random
+/dev/zero
+
+===== MOUNTS =====
+rootfs on / type rootfs (rw,size=244912k,nr_inodes=61228)
+none on /proc type proc (rw,relatime)
+none on /sys type sysfs (rw,relatime)
+none on /tmp type tmpfs (rw,relatime)
+
+===== PROCESSES =====
+PID 1: init
+BusyBox shell running as PID 58
+
+===== CPU POSSIBLE =====
+0-3
+
+===== HOSTNAME =====
+embedded-lab
+
+===== RESULT =====
+Final LAB-01 system booted successfully with:
+zImage + Device Tree Blob + initramfs.cpio.gz
+
+The ARMv7 Linux kernel successfully started userspace
+and provided a working BusyBox shell.
