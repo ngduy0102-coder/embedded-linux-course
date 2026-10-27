@@ -1,0 +1,56 @@
+===== LAB-02 CHECKPOINT 02 =====
+Prepare LAB-01 Artifacts
+
+Date:
+2026-10-27
+
+Working directory:
+/home/duy/embedded_linux_course
+
+===== ARTIFACTS =====
+
+LAB02/output/zImage
+Linux kernel ARM boot executable zImage
+
+LAB02/output/vexpress-v2p-ca9.dtb
+Device Tree Blob version 17
+
+LAB02/output/initramfs.cpio.gz
+gzip compressed initramfs
+
+===== CROSS-COMPILER =====
+
+Command:
+arm-linux-gnueabihf-gcc-11 --version | head -1
+
+Output:
+arm-linux-gnueabihf-gcc-11 (Ubuntu 11.5.0-11ubuntu2) 11.5.0
+
+===== QEMU =====
+
+Command:
+qemu-system-arm --version | head -1
+
+Output:
+QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)
+
+===== ARTIFACT CHECK =====
+
+zImage:
+PASS
+
+vexpress-v2p-ca9.dtb:
+PASS
+
+initramfs.cpio.gz:
+PASS
+
+ARM cross-compiler:
+PASS
+
+QEMU:
+PASS
+
+===== RESULT =====
+
+PASS
