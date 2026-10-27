@@ -4,7 +4,6 @@
 #include <linux/uaccess.h>
 #include <linux/device.h>
 #include <linux/mutex.h>
-
 #include <linux/proc_fs.h>
 #include <linux/seq_file.h>
 
@@ -24,34 +23,25 @@ static DEFINE_MUTEX(lab2_mutex);
 static struct proc_dir_entry *proc_lab2_info;
 
 /* =========================
- * open()
+ * Character device
  * ========================= */
+
 static int lab2_open(struct inode *inode, struct file *file)
 {
     mutex_lock(&lab2_mutex);
-
     open_count++;
-
     pr_info("lab2: device opened (count=%d)\n", open_count);
-
     mutex_unlock(&lab2_mutex);
 
     return 0;
 }
 
-/* =========================
- * release()
- * ========================= */
 static int lab2_release(struct inode *inode, struct file *file)
 {
     pr_info("lab2: device closed\n");
-
     return 0;
 }
 
-/* =========================
- * read()
- * ========================= */
 static ssize_t lab2_read(struct file *file,
                          char __user *user_buffer,
                          size_t count,
@@ -66,7 +56,8 @@ static ssize_t lab2_read(struct file *file,
         return 0;
     }
 
-    bytes_to_copy = min(count, buffer_len - (size_t)*offset);
+    bytes_to_copy = min(count,
+                        buffer_len - (size_t)*offset);
 
     if (copy_to_user(user_buffer,
                      device_buffer + *offset,
@@ -84,9 +75,6 @@ static ssize_t lab2_read(struct file *file,
     return bytes_to_copy;
 }
 
-/* =========================
- * write()
- * ========================= */
 static ssize_t lab2_write(struct file *file,
                           const char __user *user_buffer,
                           size_t count,
@@ -94,7 +82,8 @@ static ssize_t lab2_write(struct file *file,
 {
     size_t bytes_to_copy;
 
-    bytes_to_copy = min(count, (size_t)(BUFFER_SIZE - 1));
+    bytes_to_copy = min(count,
+                        (size_t)(BUFFER_SIZE - 1));
 
     mutex_lock(&lab2_mutex);
 
@@ -115,9 +104,6 @@ static ssize_t lab2_write(struct file *file,
     return bytes_to_copy;
 }
 
-/* =========================
- * file operations
- * ========================= */
 static const struct file_operations lab2_fops = {
     .owner   = THIS_MODULE,
     .open    = lab2_open,
@@ -125,6 +111,11 @@ static const struct file_operations lab2_fops = {
     .write   = lab2_write,
     .release = lab2_release,
 };
+
+
+/* =========================
+ * procfs: /proc/lab2_info
+ * ========================= */
 
 static int lab2_proc_show(struct seq_file *m, void *v)
 {
@@ -141,7 +132,8 @@ static int lab2_proc_show(struct seq_file *m, void *v)
     return 0;
 }
 
-static int lab2_proc_open(struct inode *inode, struct file *file)
+static int lab2_proc_open(struct inode *inode,
+                          struct file *file)
 {
     return single_open(file, lab2_proc_show, NULL);
 }
@@ -153,20 +145,61 @@ static const struct proc_ops lab2_proc_fops = {
     .proc_release = single_release,
 };
 
+
+/* =========================
+ * sysfs attributes
+ * ========================= */
+
+static ssize_t open_count_show(struct device *dev,
+                               struct device_attribute *attr,
+                               char *buf)
+{
+    ssize_t ret;
+
+    mutex_lock(&lab2_mutex);
+    ret = sysfs_emit(buf, "%d\n", open_count);
+    mutex_unlock(&lab2_mutex);
+
+    return ret;
+}
+
+static ssize_t buffer_len_show(struct device *dev,
+                               struct device_attribute *attr,
+                               char *buf)
+{
+    ssize_t ret;
+
+    mutex_lock(&lab2_mutex);
+    ret = sysfs_emit(buf, "%zu\n", buffer_len);
+    mutex_unlock(&lab2_mutex);
+
+    return ret;
+}
+
+static DEVICE_ATTR_RO(open_count);
+static DEVICE_ATTR_RO(buffer_len);
+
+
 /* =========================
  * module init
  * ========================= */
+
 static int __init lab2_init(void)
 {
     int ret;
 
-    ret = register_chrdev(major_number, DEVICE_NAME, &lab2_fops);
+    ret = register_chrdev(major_number,
+                          DEVICE_NAME,
+                          &lab2_fops);
+
     if (ret < 0) {
-        pr_err("lab2: failed to register major %d\n", major_number);
+        pr_err("lab2: failed to register major %d\n",
+               major_number);
         return ret;
     }
 
     lab2_class = class_create(THIS_MODULE, CLASS_NAME);
+
     if (IS_ERR(lab2_class)) {
         unregister_chrdev(major_number, DEVICE_NAME);
         return PTR_ERR(lab2_class);
@@ -184,36 +217,76 @@ static int __init lab2_init(void)
         return PTR_ERR(lab2_device);
     }
 
-    proc_lab2_info = proc_create("lab2_info", 0444, NULL, &lab2_proc_fops);
+    proc_lab2_info = proc_create("lab2_info",
+                                 0444,
+                                 NULL,
+                                 &lab2_proc_fops);
 
     if (!proc_lab2_info) {
-        device_destroy(lab2_class, MKDEV(major_number, 0));
+        device_destroy(lab2_class,
+                       MKDEV(major_number, 0));
         class_destroy(lab2_class);
         unregister_chrdev(major_number, DEVICE_NAME);
         return -ENOMEM;
     }
 
-    mutex_init(&lab2_mutex);
+    ret = device_create_file(lab2_device,
+                             &dev_attr_open_count);
+
+    if (ret) {
+        proc_remove(proc_lab2_info);
+        device_destroy(lab2_class,
+                       MKDEV(major_number, 0));
+        class_destroy(lab2_class);
+        unregister_chrdev(major_number, DEVICE_NAME);
+        return ret;
+    }
+
+    ret = device_create_file(lab2_device,
+                             &dev_attr_buffer_len);
+
+    if (ret) {
+        device_remove_file(lab2_device,
+                           &dev_attr_open_count);
+        proc_remove(proc_lab2_info);
+        device_destroy(lab2_class,
+                       MKDEV(major_number, 0));
+        class_destroy(lab2_class);
+        unregister_chrdev(major_number, DEVICE_NAME);
+        return ret;
+    }
 
     buffer_len = 0;
     open_count = 0;
 
-
-    pr_info("lab2: driver loaded, major=%d\n", major_number);
+    pr_info("lab2: driver loaded, major=%d\n",
+            major_number);
 
     return 0;
 }
 
+
 /* =========================
  * module exit
  * ========================= */
+
 static void __exit lab2_exit(void)
 {
+    device_remove_file(lab2_device,
+                       &dev_attr_buffer_len);
+
+    device_remove_file(lab2_device,
+                       &dev_attr_open_count);
+
     proc_remove(proc_lab2_info);
 
-    device_destroy(lab2_class, MKDEV(major_number, 0));
+    device_destroy(lab2_class,
+                   MKDEV(major_number, 0));
+
     class_destroy(lab2_class);
-    unregister_chrdev(major_number, DEVICE_NAME);
+
+    unregister_chrdev(major_number,
+                      DEVICE_NAME);
 
     pr_info("lab2: driver unloaded\n");
 }

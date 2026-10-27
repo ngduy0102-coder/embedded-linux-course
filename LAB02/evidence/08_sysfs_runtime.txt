@@ -1,0 +1,36 @@
+===== LAB-02 PART B2: SYSFS RUNTIME =====
+
+Date: 2026-10-28
+
+Driver:
+- /dev/lab2
+- Major: 240
+
+Sysfs directory:
+/sys/class/lab2_class/lab2/
+
+Available attributes:
+- open_count
+- buffer_len
+
+Initial state:
+open_count = 0
+buffer_len = 0
+
+Test:
+echo -n "ABC" > /dev/lab2
+
+Driver output:
+lab2: device opened (count=1)
+lab2: wrote 3 bytes
+lab2: device closed
+
+Sysfs after write:
+open_count = 1
+buffer_len = 3
+
+Result:
+PASS - Sysfs attributes are created successfully.
+PASS - open_count reflects device open activity.
+PASS - buffer_len reflects written data length.
+PASS - Sysfs correctly exposes driver state.
