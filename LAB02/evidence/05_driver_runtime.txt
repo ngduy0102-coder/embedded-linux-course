@@ -1,0 +1,73 @@
+===== LAB-02 CHECKPOINT 05 =====
+Character Device Driver Runtime Verification
+
+Date:
+2026-10-27
+
+===== QEMU =====
+
+Machine:
+vexpress-a9
+
+CPU:
+cortex-a9
+
+Memory:
+512M
+
+SMP:
+2 CPUs
+
+===== DRIVER LOAD =====
+
+Command:
+insmod /lib/modules/lab2_driver.ko
+
+Result:
+PASS
+
+Kernel message:
+lab2: driver loaded, major=240
+
+===== DEVICE REGISTRATION =====
+
+Command:
+cat /proc/devices | grep lab2
+
+Output:
+240 lab2
+
+Result:
+PASS
+
+===== DEVICE NODE =====
+
+Command:
+ls -l /dev/lab2
+
+Output:
+crw-rw-rw-    1 root     0         240,   0 /dev/lab2
+
+Major:
+240
+
+Minor:
+0
+
+Result:
+PASS
+
+===== DMESG =====
+
+Command:
+dmesg | grep lab2
+
+Output:
+lab2_driver: loading out-of-tree module taints kernel.
+lab2: driver loaded, major=240
+
+Result:
+PASS
+
+===== CHECKPOINT RESULT =====
+PASS
