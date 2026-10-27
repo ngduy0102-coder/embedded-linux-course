@@ -1,0 +1,23 @@
+# =========================================================
+# Embedded Linux Course - Git Ignore
+# =========================================================
+
+# LAB01 source/build trees
+LAB01/kernel/
+LAB01/rootfs/
+LAB01/uboot/
+
+# LAB02 source/build trees if generated later
+LAB02/kernel/
+LAB02/rootfs/
+LAB02/uboot/
+
+# Generic build artifacts
+*.o
+*.a
+*.cmd
+*.d
+*.tmp
+*.swp
+*.swo
+*~
