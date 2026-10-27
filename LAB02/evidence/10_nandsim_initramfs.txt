@@ -1,0 +1,22 @@
+===== LAB-02 PART C2: NANDSIM INITRAMFS =====
+Date: 2026-10-28
+
+Initramfs:
+- File: LAB02/output/initramfs.cpio.gz
+- Size: 1.3M
+
+Kernel modules included:
+- lib/modules/lab2_driver.ko
+- lib/modules/nandsim.ko
+
+nandsim module:
+- ARM 32-bit EABI5
+- Size: 249K
+
+Verification:
+- nandsim.ko found inside initramfs
+- lab2_driver.ko found inside initramfs
+
+Result:
+PASS - NAND simulator module is included in the LAB02 initramfs.
+PASS - Character device driver is included in the LAB02 initramfs.
