@@ -1,0 +1,62 @@
+===== LAB-02 CHECKPOINT 06 =====
+Character Device Driver Read / Write Test
+
+Date:
+2026-10-27
+
+===== WRITE TEST =====
+
+Command:
+echo "Hello from userspace, LAB-02!" > /dev/lab2
+
+Output:
+lab2: device opened (count=1)
+lab2: wrote 30 bytes
+lab2: device closed
+
+Result:
+PASS
+
+===== READ TEST =====
+
+Command:
+cat /dev/lab2
+
+Output:
+lab2: device opened (count=2)
+lab2: read 30 bytes
+Hello from userspace, LAB-02!
+lab2: device closed
+
+Result:
+PASS
+
+===== DMESG VERIFICATION =====
+
+Command:
+dmesg | grep "lab2:" | tail -10
+
+Output:
+lab2: driver loaded, major=240
+lab2: device opened (count=1)
+lab2: wrote 30 bytes
+lab2: device closed
+lab2: device opened (count=2)
+lab2: read 30 bytes
+lab2: device closed
+
+Result:
+PASS
+
+===== DATA FLOW =====
+
+Write:
+User Space -> /dev/lab2 -> lab2_write() -> copy_from_user()
+-> kernel buffer
+
+Read:
+kernel buffer -> lab2_read() -> copy_to_user()
+-> /dev/lab2 -> User Space
+
+===== CHECKPOINT RESULT =====
+PASS
