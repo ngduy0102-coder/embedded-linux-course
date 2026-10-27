@@ -5,6 +5,9 @@
 #include <linux/device.h>
 #include <linux/mutex.h>
 
+#include <linux/proc_fs.h>
+#include <linux/seq_file.h>
+
 #define DEVICE_NAME "lab2"
 #define CLASS_NAME  "lab2_class"
 #define BUFFER_SIZE 1024
@@ -18,6 +21,7 @@ static int open_count;
 static struct class *lab2_class;
 static struct device *lab2_device;
 static DEFINE_MUTEX(lab2_mutex);
+static struct proc_dir_entry *proc_lab2_info;
 
 /* =========================
  * open()
@@ -122,6 +126,33 @@ static const struct file_operations lab2_fops = {
     .release = lab2_release,
 };
 
+static int lab2_proc_show(struct seq_file *m, void *v)
+{
+    mutex_lock(&lab2_mutex);
+
+    seq_printf(m, "LAB-02 Character Device Driver\n");
+    seq_printf(m, "Device: /dev/%s\n", DEVICE_NAME);
+    seq_printf(m, "Major: %d\n", DRIVER_MAJOR);
+    seq_printf(m, "Open count: %d\n", open_count);
+    seq_printf(m, "Buffer length: %zu\n", buffer_len);
+
+    mutex_unlock(&lab2_mutex);
+
+    return 0;
+}
+
+static int lab2_proc_open(struct inode *inode, struct file *file)
+{
+    return single_open(file, lab2_proc_show, NULL);
+}
+
+static const struct proc_ops lab2_proc_fops = {
+    .proc_open    = lab2_proc_open,
+    .proc_read    = seq_read,
+    .proc_lseek   = seq_lseek,
+    .proc_release = single_release,
+};
+
 /* =========================
  * module init
  * ========================= */
@@ -153,10 +184,20 @@ static int __init lab2_init(void)
         return PTR_ERR(lab2_device);
     }
 
+    proc_lab2_info = proc_create("lab2_info", 0444, NULL, &lab2_proc_fops);
+
+    if (!proc_lab2_info) {
+        device_destroy(lab2_class, MKDEV(major_number, 0));
+        class_destroy(lab2_class);
+        unregister_chrdev(major_number, DEVICE_NAME);
+        return -ENOMEM;
+    }
+
     mutex_init(&lab2_mutex);
 
     buffer_len = 0;
     open_count = 0;
+
 
     pr_info("lab2: driver loaded, major=%d\n", major_number);
 
@@ -168,6 +209,8 @@ static int __init lab2_init(void)
  * ========================= */
 static void __exit lab2_exit(void)
 {
+    proc_remove(proc_lab2_info);
+
     device_destroy(lab2_class, MKDEV(major_number, 0));
     class_destroy(lab2_class);
     unregister_chrdev(major_number, DEVICE_NAME);

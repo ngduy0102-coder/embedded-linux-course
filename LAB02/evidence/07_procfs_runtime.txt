@@ -1,0 +1,42 @@
+===== LAB-02 PART B1: PROCFS RUNTIME =====
+
+Date: 2026-10-28
+
+Driver:
+- /dev/lab2
+- Major: 240
+
+Initial /proc/lab2_info:
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 0
+Buffer length: 0
+
+After:
+echo -n "ABC" > /dev/lab2
+
+/proc/lab2_info:
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 1
+Buffer length: 3
+
+After:
+cat /dev/lab2
+
+Output:
+ABC
+
+/proc/lab2_info:
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 2
+Buffer length: 3
+
+Result:
+PASS - /proc/lab2_info successfully reports driver state.
+PASS - open_count changes correctly.
+PASS - buffer_len reflects written data length.
