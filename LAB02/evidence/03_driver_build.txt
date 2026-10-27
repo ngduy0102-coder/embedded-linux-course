@@ -1,0 +1,60 @@
+===== LAB-02 CHECKPOINT 03 =====
+Character Device Driver Build
+
+Date:
+2026-10-27
+
+Driver:
+LAB02/driver/lab2_driver.c
+
+Makefile:
+LAB02/driver/Makefile
+
+Kernel:
+Linux 5.15.0
+
+Architecture:
+ARMv7-A
+
+Cross Compiler:
+arm-linux-gnueabihf-gcc-11
+
+Build flags:
+-march=armv7-a -marm -msoft-float -mabi=aapcs-linux -mfpu=vfp
+
+===== BUILD RESULT =====
+
+Command:
+make KCFLAGS="-march=armv7-a -marm -msoft-float -mabi=aapcs-linux -mfpu=vfp"
+
+Result:
+PASS
+
+Output:
+lab2_driver.ko
+
+File:
+LAB02/driver/lab2_driver.ko
+
+Size:
+133K
+
+File type:
+ELF 32-bit LSB relocatable, ARM, EABI5
+
+===== KERNEL PREPARATION =====
+
+scripts/module.lds:
+PASS
+
+Module.symvers:
+PASS
+
+CONFIG_MODULES:
+y
+
+CONFIG_MODVERSIONS:
+not set
+
+===== RESULT =====
+PASS
