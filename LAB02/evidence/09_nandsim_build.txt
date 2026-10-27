@@ -1,0 +1,26 @@
+===== LAB-02 PART C1: NAND SIMULATOR BUILD =====
+Date: 2026-10-28
+
+Kernel:
+- Linux 5.15
+- ARCH=arm
+- CROSS_COMPILE=arm-linux-gnueabihf-
+
+NAND configuration:
+- CONFIG_MTD_NAND_CORE=y
+- CONFIG_MTD_RAW_NAND=y
+- CONFIG_MTD_NAND_NANDSIM=m
+
+NAND exported symbols verified:
+- nand_cleanup
+- nand_create_bbt
+- nand_scan_with_ids
+
+nandsim module:
+- File: LAB02/driver/nandsim/nandsim.ko
+- Size: 249K
+- Format: ELF 32-bit LSB relocatable, ARM, EABI5
+
+Result:
+PASS - NAND simulator kernel module built successfully.
+PASS - Module is ARM EABI5 and suitable for the ARM QEMU environment.
