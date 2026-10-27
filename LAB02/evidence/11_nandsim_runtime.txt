@@ -1,0 +1,32 @@
+===== LAB02 C2.7 NAND SIMULATOR RUNTIME =====
+
+Kernel:
+Linux 5.15.0 ARMv7-A Cortex-A9 QEMU vexpress-a9
+
+NAND simulator module:
+nandsim.ko
+
+Load result:
+SUCCESS
+
+Detected NAND:
+Manufacturer ID: 0x98
+Chip ID: 0x39
+Toshiba NAND 128MiB 1,8V 8-bit
+
+NAND parameters:
+Flash size: 128 MiB
+Page size: 512 bytes
+OOB area size: 16 bytes
+Erase size: 16 KiB
+
+Module status:
+nandsim 24576 0 - Live
+
+/proc/mtd after loading nandsim:
+mtd0: 08000000 00040000 "40000000.flash"
+mtd1: 02000000 00001000 "48000000.psram"
+mtd2: 08000000 00004000 "NAND simulator partition 0"
+
+Result:
+PASS - NAND simulator loaded successfully and created MTD device mtd2.
