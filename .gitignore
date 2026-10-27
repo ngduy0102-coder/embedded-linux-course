@@ -21,3 +21,12 @@ LAB02/uboot/
 *.swp
 *.swo
 *~
+
+# LAB02 driver build artifacts
+LAB02/driver/*.ko
+LAB02/driver/*.o
+LAB02/driver/*.mod
+LAB02/driver/*.mod.c
+LAB02/driver/Module.symvers
+LAB02/driver/modules.order
+LAB02/driver/.lab2_driver*
