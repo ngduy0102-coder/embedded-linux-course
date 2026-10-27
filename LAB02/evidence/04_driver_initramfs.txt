@@ -1,0 +1,58 @@
+===== LAB-02 CHECKPOINT 04 =====
+Driver Initramfs Preparation
+
+Date:
+2026-10-28
+
+===== INITRAMFS =====
+
+File:
+LAB02/output/initramfs.cpio.gz
+
+Size:
+1.1M
+
+===== DRIVER =====
+
+Path inside initramfs:
+lib/modules/lab2_driver.ko
+
+Driver:
+lab2_driver.ko
+
+Build result:
+PASS
+
+===== BOOT SCRIPT =====
+
+Path:
+etc/init.d/rcS
+
+Functions:
+- Mount /proc
+- Mount /sys
+- Mount /tmp
+- Load lab2_driver.ko
+- Create /dev/lab2
+- Set device major/minor
+- Set hostname
+
+Device:
+ /dev/lab2
+
+Major:
+240
+
+Minor:
+0
+
+===== VERIFICATION =====
+
+Driver found in initramfs:
+PASS
+
+rcS found in initramfs:
+PASS
+
+===== RESULT =====
+PASS
