@@ -1,0 +1,13 @@
+===== LAB-02 WORKSPACE =====
+Tue Oct 27 09:53:14 AM +07 2026
+
+Working directory:
+/home/duy/embedded_linux_course/LAB02
+
+Directory structure:
+.
+./configs
+./driver
+./evidence
+./output
+./rootfs
