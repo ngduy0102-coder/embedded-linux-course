@@ -1,0 +1,13 @@
+===== LAB02 D6.4: last_data RUNTIME TEST =====
+[SYSFS last_data]
+HELLO_LAB02
+[SYSFS buffer_len]
+11
+[SYSFS open_count]
+3
+[PROCFS]
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 3
+Buffer length: 11
