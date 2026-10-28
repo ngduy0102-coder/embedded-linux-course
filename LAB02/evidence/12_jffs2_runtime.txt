@@ -1,0 +1,85 @@
+===== LAB02 C3: JFFS2 / NAND PERSISTENCE EVIDENCE =====
+
+C3.1 - NAND simulator / MTD
+/proc/mtd:
+mtd0: 08000000 00040000 "40000000.flash"
+mtd1: 02000000 00001000 "48000000.psram"
+mtd2: 08000000 00004000 "NAND simulator partition 0"
+
+MTD device:
+  /dev/mtd2      major 90, minor 4
+  /dev/mtdblock2 major 31, minor 2
+
+C3.2 - JFFS2 image
+Host image:
+  LAB02/output/jffs2_test.img
+
+Image size:
+  148 bytes
+
+Created with:
+  mkfs.jffs2 --eraseblock=0x4000 --no-cleanmarkers
+
+C3.4 - nandwrite
+Target image:
+  /opt/jffs2_test.img
+
+Command:
+  nandwrite -p /dev/mtd2 /opt/jffs2_test.img
+
+Result:
+  Writing at 0x00000000
+  exit code = 0
+
+C3.6.5 - JFFS2 mount
+Command:
+  mount -t jffs2 /dev/mtdblock2 /mnt/jffs2
+
+Result:
+  mount exit code = 0
+
+Verified file:
+  /mnt/jffs2/test.txt
+
+Content:
+  LAB02 JFFS2 persistence test
+
+C3.6.6 - JFFS2 runtime persistence
+Created:
+  /mnt/jffs2/runtime.txt
+
+Content:
+  JFFS2 runtime persistence test - SE192916
+
+Procedure:
+  write file
+  umount /mnt/jffs2
+  mount -t jffs2 /dev/mtdblock2 /mnt/jffs2
+
+Result:
+  runtime.txt remained after remount
+  remount exit code = 0
+
+C3.6.7 - NAND dump
+Command:
+  nanddump -f /opt/nand_mtd2_dump.bin -l 0x4000 /dev/mtd2
+
+Result:
+  dump size = 16.0K
+
+JFFS2 magic:
+  85 19
+
+Hexdump:
+  00000000  85 19 01 e0 30 00 00 00 78 be 3e fa 01 00 00 00
+  00000010  00 00 00 00 02 00 00 00 c2 47 e1 6a 08 08 00 00
+
+Conclusion:
+  JFFS2 image was successfully written to the NAND simulator,
+  mounted as JFFS2, verified after unmount/remount, and confirmed
+  in the raw NAND dump by the JFFS2 magic bytes 0x85 0x19.
+
+Note:
+  Persistence was verified across unmount/remount within the same
+  nandsim session. This does not claim persistence across QEMU reboot,
+  because nandsim storage is simulated in RAM.
