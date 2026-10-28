@@ -1,0 +1,63 @@
+===== LAB02 PART D: BUSYBOX AUTOLOAD / BOOT INTEGRATION =====
+
+D1 - BusyBox init configuration
+
+/etc/inittab:
+  ::sysinit:/etc/init.d/rcS
+  ::askfirst:-/bin/sh
+  ::ctrlaltdel:/sbin/reboot
+  ::shutdown:/sbin/swapoff -a
+  ::shutdown:/bin/umount -a -r
+  ::restart:/sbin/init
+
+/sbin/init:
+  symlink -> ../bin/busybox
+
+D2 - Initramfs verification
+
+Initramfs contains:
+  lib/modules/lab2_driver.ko
+  etc/init.d/rcS
+  etc/inittab
+  sbin/init
+
+D3 - Automatic boot verification
+
+Hostname:
+  embedded-lab2
+
+Loaded module:
+  lab2_driver 16384 0 - Live ...
+
+Device:
+  /dev/lab2
+  major = 240
+  minor = 0
+
+Procfs:
+  /proc/lab2_info
+
+Output:
+  LAB-02 Character Device Driver
+  Device: /dev/lab2
+  Major: 240
+  Open count: 0
+  Buffer length: 0
+
+Sysfs:
+  /sys/class/lab2_class/lab2/open_count = 0
+  /sys/class/lab2_class/lab2/buffer_len = 0
+
+Kernel log:
+  lab2_driver: loading out-of-tree module taints kernel.
+  lab2: driver loaded, major=240
+
+Conclusion:
+  BusyBox automatically executed /etc/init.d/rcS during boot.
+  The LAB02 character device driver was automatically loaded,
+  /dev/lab2 was created, and procfs/sysfs interfaces were available
+  without manually running insmod after boot.
+
+Note:
+  The "out-of-tree module taints kernel" message is expected for
+  an external kernel module and does not indicate a failure.
