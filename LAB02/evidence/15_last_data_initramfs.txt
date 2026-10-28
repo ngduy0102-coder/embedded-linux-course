@@ -1,0 +1,10 @@
+===== LAB02 D6.3: UPDATE INITRAMFS WITH last_data DRIVER =====
+
+[1] Driver in rootfs:
+-rw-rw-r-- 1 duy duy 141K Oct 28 08:23 LAB02/rootfs/lib/modules/lab2_driver.ko
+
+[2] Initramfs:
+-rw-rw-r-- 1 duy duy 1.3M Oct 28 08:23 LAB02/output/initramfs.cpio.gz
+
+[3] Driver present in initramfs:
+lib/modules/lab2_driver.ko
