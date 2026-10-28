@@ -16,6 +16,7 @@ static int major_number = DRIVER_MAJOR;
 static char device_buffer[BUFFER_SIZE];
 static size_t buffer_len;
 static int open_count;
+static char last_data[BUFFER_SIZE];
 
 static struct class *lab2_class;
 static struct device *lab2_device;
@@ -97,6 +98,10 @@ static ssize_t lab2_write(struct file *file,
     device_buffer[bytes_to_copy] = '\0';
     buffer_len = bytes_to_copy;
 
+    memcpy(last_data,
+       device_buffer,
+       bytes_to_copy + 1);
+
     mutex_unlock(&lab2_mutex);
 
     pr_info("lab2: wrote %zu bytes\n", bytes_to_copy);
@@ -176,9 +181,22 @@ static ssize_t buffer_len_show(struct device *dev,
     return ret;
 }
 
+static ssize_t last_data_show(struct device *dev,
+                              struct device_attribute *attr,
+                              char *buf)
+{
+    ssize_t ret;
+
+    mutex_lock(&lab2_mutex);
+    ret = sysfs_emit(buf, "%s\n", last_data);
+    mutex_unlock(&lab2_mutex);
+
+    return ret;
+}
+
 static DEVICE_ATTR_RO(open_count);
 static DEVICE_ATTR_RO(buffer_len);
-
+static DEVICE_ATTR_RO(last_data);
 
 /* =========================
  * module init
@@ -256,8 +274,25 @@ static int __init lab2_init(void)
         return ret;
     }
 
+ret = device_create_file(lab2_device,
+                         &dev_attr_last_data);
+
+if (ret) {
+    device_remove_file(lab2_device,
+                       &dev_attr_buffer_len);
+    device_remove_file(lab2_device,
+                       &dev_attr_open_count);
+    proc_remove(proc_lab2_info);
+    device_destroy(lab2_class,
+                   MKDEV(major_number, 0));
+    class_destroy(lab2_class);
+    unregister_chrdev(major_number, DEVICE_NAME);
+    return ret;
+}
+
     buffer_len = 0;
     open_count = 0;
+    last_data[0] = '\0';
 
     pr_info("lab2: driver loaded, major=%d\n",
             major_number);
@@ -272,6 +307,9 @@ static int __init lab2_init(void)
 
 static void __exit lab2_exit(void)
 {
+    device_remove_file(lab2_device,
+                   &dev_attr_last_data);
+
     device_remove_file(lab2_device,
                        &dev_attr_buffer_len);
 
