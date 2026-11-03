@@ -2,7 +2,18 @@
 
 echo '=== Test procfs & sysfs ==='
 
-insmod /lib/modules/5.15.0/lab2_driver.ko
+if lsmod | grep -q '^lab2_driver'; then
+    echo 'lab2_driver already loaded by rcS'
+else
+    echo 'Loading lab2_driver...'
+    insmod /lib/modules/5.15.0/lab2_driver.ko
+    if [ $? -ne 0 ]; then
+        echo 'ERROR: insmod failed!'
+        exit 1
+    fi
+fi
+
+
 mknod /dev/lab2 c 240 0 2>/dev/null
 
 # Test procfs
