@@ -1,0 +1,68 @@
+LAB03 - PART B.5: MEMORY MEASUREMENT AND ARCHITECTURE COMPARISON
+
+1. ARM measurement
+
+Environment:
+- QEMU machine: vexpress-a9
+- CPU: cortex-a9
+- RAM: 512 MB
+- Architecture: ARM 32-bit EABI5
+- Program: leaky_app_measure_arm
+- Measurement source: /proc/PID/status
+
+Observed values:
+PID: 64
+VmPeak: 1680 kB
+VmSize: 1680 kB
+VmHWM: 152 kB
+VmRSS: 152 kB
+
+2. Native x86-64 measurement
+
+Environment:
+- OS: Ubuntu 26.04.1 LTS
+- Architecture: x86-64
+- Program: leaky_app_measure_x86
+- Measurement source: /proc/PID/status
+
+Observed values:
+PID: 102678
+VmPeak: 2772 kB
+VmSize: 2772 kB
+VmHWM: 1972 kB
+VmRSS: 1972 kB
+
+3. Comparison
+
+Metric          ARM (QEMU)      Native (x86-64)
+VmPeak          1680 kB         2772 kB
+VmSize          1680 kB         2772 kB
+VmHWM           152 kB          1972 kB
+VmRSS           152 kB          1972 kB
+
+4. Analysis
+
+The native x86-64 process showed a higher memory footprint than
+the ARM process in this experiment.
+
+Possible factors include:
+- Different executable architectures and ABI.
+- Different dynamic loaders and C libraries.
+- Different runtime memory mappings.
+- Differences between the Ubuntu host and QEMU guest environments.
+
+These measurements represent the complete process memory footprint.
+They must not be interpreted as the amount of leaked heap memory.
+
+5. Relation to Valgrind
+
+The original native application reported:
+- Definitely lost: 16,900 bytes in 250 blocks.
+
+The Valgrind result measures unreachable heap allocations, whereas
+VmRSS and VmSize describe the overall process memory footprint.
+
+The measurement-only source was derived from the original LAB03
+source. A 5-second sleep was added at the end to keep the process
+alive long enough to inspect /proc/PID/status. The three intentional
+memory leaks were preserved.
