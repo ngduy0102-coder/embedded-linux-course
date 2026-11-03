@@ -1,0 +1,56 @@
+LAB-03 GDB Evidence - Bug 1: Out-of-Bounds Read
+Student: Nguyen Duy
+
+[1] Breakpoint at process_data()
+(gdb) break process_data
+(gdb) continue
+Breakpoint, process_data (data=..., len=5) at buggy_app.c:6
+
+[2] Check array length
+(gdb) print len
+$ = 5
+
+Valid array indices for 5 elements are:
+0, 1, 2, 3, 4
+
+[3] Source
+7   int sum = 0;
+8   for (int i = 0; i <= len; i++) {
+9       sum += data[i];
+
+The loop condition uses <= instead of <.
+
+[4] Confirm the invalid index
+After stepping into the loop:
+
+(gdb) print i
+$ = 0
+
+A conditional breakpoint was then used:
+(gdb) break buggy_app.c:9 if i == 5
+
+Execution stopped at:
+9   sum += data[i];
+
+(gdb) print i
+$ = 5
+
+Therefore the code accesses data[5].
+
+[5] Address evidence
+(gdb) print &data[4]
+$ = 0x7efffd00
+
+(gdb) print &data[5]
+$ = 0x7efffd04
+
+data[5] is outside the 5-element array whose valid indices are 0..4.
+
+[6] Conclusion
+Bug 1 is an Out-of-Bounds Read, not a Null Pointer Dereference.
+The loop must stop at i < len instead of i <= len.
+
+Correct code:
+for (int i = 0; i < len; i++) {
+    sum += data[i];
+}
