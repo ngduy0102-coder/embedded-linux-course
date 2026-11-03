@@ -1,0 +1,153 @@
+===== LAB-02 D5 FULL RUNTIME CHECK =====
+Environment:
+- Target: ARMv7-A Cortex-A9 QEMU vexpress-a9
+- Kernel: Linux 5.15.0
+- Driver: lab2_driver
+- Device: /dev/lab2
+- Major: 240
+- Initramfs: output/initramfs.cpio.gz
+
+===== D5 [1] lsmod =====
+lab2_driver 16384 0 - Live 0x7f000000 (O)
+
+===== D5 [2] /dev/lab2 =====
+crw-rw-rw-    1 root     0         240,   0 Nov  3 04:09 /dev/lab2
+
+===== D5 [3] test_driver.sh =====
+=== LAB-02: Device Driver Test ===
+[1] Checking lab2_driver...
+lab2_driver already loaded by rcS
+[2] Loaded modules:
+lab2_driver 16384 0 - Live 0x7f000000 (O)
+[3] Creating device node...
+(node already exists)
+crw-rw-rw-    1 root     0         240,   0 Nov  3 04:09 /dev/lab2
+[4] Writing to device...
+lab2: device opened (count=1)
+lab2: wrote 30 bytes
+lab2: device closed
+[5] Reading from device...
+lab2: device opened (count=2)
+lab2: read 30 bytes
+lab2: device closed
+ Read back: [Hello from userspace, LAB-02!]
+[6] Multiple write/read test...
+lab2: device opened (count=3)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=4)
+lab2: read 10 bytes
+Message_1
+lab2: device closed
+lab2: device opened (count=5)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=6)
+lab2: read 10 bytes
+Message_2
+lab2: device closed
+lab2: device opened (count=7)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=8)
+lab2: read 10 bytes
+Message_3
+lab2: device closed
+[7] Kernel messages (dmesg):
+lab2: device closed
+lab2: device opened (count=6)
+lab2: read 10 bytes
+lab2: device closed
+lab2: device opened (count=7)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=8)
+lab2: read 10 bytes
+lab2: device closed
+=== Test PASSED ===
+
+===== D5 [4] test_procfs.sh =====
+=== Test procfs & sysfs ===
+lab2_driver already loaded by rcS
+--- /proc/lab2_info (before write) ---
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 8
+Buffer length: 10
+lab2: device opened (count=9)
+lab2: wrote 30 bytes
+lab2: device closed
+--- /proc/lab2_info (after write) ---
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 9
+Buffer length: 30
+--- sysfs attributes ---
+buffer_len : 30
+open_count : 9
+last_data : Embedded Linux Lab2 Test Data
+=== procfs/sysfs Test PASSED ===
+
+===== D5 [5] /proc/lab2_info =====
+LAB-02 Character Device Driver
+Device: /dev/lab2
+Major: 240
+Open count: 9
+Buffer length: 30
+
+===== D5 [6] sysfs attributes =====
+sysfs directory:
+/sys/class/lab2_class/lab2 -> ../../devices/virtual/lab2_class/lab2
+
+buffer_len:
+30
+
+open_count:
+9
+
+last_data:
+Embedded Linux Lab2 Test Data
+
+===== D5 [7] dmesg =====
+lab2_driver: loading out-of-tree module taints kernel.
+lab2: driver loaded, major=240
+lab2: device opened (count=1)
+lab2: wrote 30 bytes
+lab2: device closed
+lab2: device opened (count=2)
+lab2: read 30 bytes
+lab2: device closed
+lab2: device opened (count=3)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=4)
+lab2: read 10 bytes
+lab2: device closed
+lab2: device opened (count=5)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=6)
+lab2: read 10 bytes
+lab2: device closed
+lab2: device opened (count=7)
+lab2: wrote 10 bytes
+lab2: device closed
+lab2: device opened (count=8)
+lab2: read 10 bytes
+lab2: device closed
+lab2: device opened (count=9)
+lab2: wrote 30 bytes
+lab2: device closed
+
+===== D5 RESULT =====
+[PASS] D5 [1] lsmod
+[PASS] D5 [2] /dev/lab2
+[PASS] D5 [3] test_driver.sh
+[PASS] D5 [4] test_procfs.sh
+[PASS] D5 [5] /proc/lab2_info
+[PASS] D5 [6] sysfs attributes
+[PASS] D5 [7] dmesg
+
+D5 FULL RUNTIME CHECK: PASS
