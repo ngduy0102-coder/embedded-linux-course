@@ -1,0 +1,33 @@
+LAB-03 GDB Evidence - Bug 2: Use-After-Free
+Student: Nguyen Duy
+
+[1] Breakpoint at create_message()
+(gdb) break create_message
+Breakpoint 5 at 0x4006cc: file buggy_app.c, line 16.
+
+[2] Continue to create_message()
+(gdb) continue
+Breakpoint 1, create_message (text=0x400940 "Hello Embedded Linux") at buggy_app.c:16
+16  char *buf = malloc(strlen(text) + 1);
+
+[3] Finish function and return to main
+(gdb) finish
+Run till exit from #0 create_message(...)
+0x00400788 in main (...) at buggy_app.c:40
+40  char *msg = create_message("Hello Embedded Linux");
+Value returned is $3 = 0x422010 "\"\004"
+
+[4] Source confirmation
+38  printf("[TEST2] Creating message\n");
+40  char *msg = create_message("Hello Embedded Linux");
+41  printf("Message: %s\n", msg); /* Use after free */
+
+[5] Conclusion
+create_message() allocates buf, copies the message, calls free(buf),
+and then returns buf. Therefore the returned pointer is dangling.
+main() subsequently passes msg to printf("%s"), causing a
+Use-After-Free condition.
+
+Note:
+The original source comment labels Bug 1 as "Null pointer dereference",
+but the actual Bug 1 is an Out-of-Bounds Read at data[len].
