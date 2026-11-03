@@ -1,0 +1,93 @@
+===== LAB-02 PART C.2-C.5 HOST NAND/JFFS2 EVIDENCE =====
+
+Environment:
+- Host: Ubuntu 26.04.1 LTS
+- Kernel: Linux 5.15.0
+- NAND simulator: nandsim
+- MTD device: /dev/mtd1
+- NAND size: 128 MiB
+- Erase block: 16 KiB
+
+===== C.2 HOST: NAND SIMULATOR =====
+
+nandsim loaded successfully:
+nandsim 57344 0
+
+/proc/mtd:
+mtd1: 08000000 00004000 "NAND simulator partition 0"
+
+===== C.3.2 HOST: JFFS2 IMAGE =====
+
+Source:
+LAB02 JFFS2 HOST persistence test - SE192916
+
+Image:
+output/jffs2_host_test.img
+164 bytes
+Linux jffs2 filesystem data little endian
+
+===== C.3.3 HOST: FLASH ERASE =====
+
+flash_erase /dev/mtd1 0 0
+Erasing 131072 Kibyte @ 0 -- 100 % complete
+Exit code = 0
+
+===== C.3.4 HOST: NANDWRITE =====
+
+nandwrite -p /dev/mtd1 output/jffs2_host_test.img
+Writing data to block 0 at offset 0x0
+Exit code = 0
+
+===== C.3.5 HOST: MOUNT / READ =====
+
+/dev/mtdblock1 on /mnt/lab2_jffs2 type jffs2 (rw,relatime)
+
+test.txt:
+LAB02 JFFS2 HOST persistence test - SE192916
+
+===== C.3.6 HOST: JFFS2 PERSISTENCE =====
+
+Runtime file:
+JFFS2 HOST runtime persistence - SE192916
+
+Verified:
+write -> unmount -> remount -> read
+
+Result:
+JFFS2 HOST runtime persistence - SE192916
+
+===== C.5 HOST: NAND DUMP =====
+
+nanddump:
+ECC failed: 0
+ECC corrected: 0
+Number of bad blocks: 0
+Number of bbt blocks: 0
+Block size 16384
+Page size 512
+OOB size 16
+
+JFFS2 magic:
+85 19
+
+Raw NAND also contained:
+test.txt
+LAB02 JFFS2 HOST persistence test - SE192916
+
+===== C.5 CLEANUP =====
+
+nandsim removed
+
+After cleanup:
+/proc/mtd contains only host BIOS MTD device.
+
+NAND simulator device nodes removed:
+- /dev/mtd1
+- /dev/mtdblock1
+
+===== RESULT =====
+
+C.2 PASS
+C.3 PASS
+C.5 PASS
+HOST NAND/JFFS2 workflow PASS
