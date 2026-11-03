@@ -1,0 +1,27 @@
+# Temporary/editor files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Object/build files
+*.o
+*.a
+*.lo
+*.la
+*.tmp
+
+# Local runtime logs
+logs/*
+
+# Generated RT kernel build tree
+rt_kernel/*
+
+# Local rootfs generated from LAB01/LAB02
+rootfs/
+
+# Generated initramfs
+# Keep the final compressed image tracked for QEMU reproducibility.
+# output/initramfs.cpio.gz is intentionally NOT ignored.
+
+# GDB/build source is outside LAB03 and must not be committed.
