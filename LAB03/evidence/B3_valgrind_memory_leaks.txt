@@ -1,0 +1,75 @@
+LAB03 - Part B: Valgrind Memory Leak Analysis
+==============================================
+
+Target:
+    apps/leaky_app
+
+Command:
+    valgrind --tool=memcheck \
+      --leak-check=full \
+      --show-leak-kinds=all \
+      --track-origins=yes \
+      --verbose \
+      --log-file="$HOME/embedded_linux_course/LAB03/logs/valgrind_report.txt" \
+      ./leaky_app
+
+Observed result:
+    HEAP SUMMARY:
+        in use at exit: 16,900 bytes in 250 blocks
+        total heap usage: 352 allocs, 102 frees, 21,124 bytes allocated
+
+    LEAK SUMMARY:
+        definitely lost: 16,900 bytes in 250 blocks
+        indirectly lost: 0 bytes in 0 blocks
+        possibly lost: 0 bytes in 0 blocks
+        still reachable: 0 bytes in 0 blocks
+        suppressed: 0 bytes in 0 blocks
+
+Detected leak contexts:
+
+    1. leaky_app.c:24
+       create_record()
+       2,000 bytes in 100 blocks
+
+       Cause:
+       r->scores is allocated with malloc() but is not freed
+       in delete_record().
+
+    2. leaky_app.c:21
+       create_record()
+       2,100 bytes in 100 blocks
+
+       Cause:
+       r->name is allocated with malloc() but is not freed
+       in delete_record().
+
+    3. leaky_app.c:44
+       process_messages()
+       12,800 bytes in 50 blocks
+
+       Cause:
+       buf is allocated with malloc(MSG_SIZE) but is not
+       freed inside process_messages().
+
+Total:
+    16,900 bytes definitely lost
+    250 leaked blocks
+
+Interpretation:
+    The program intentionally contains three memory leaks.
+    The Record structure itself is freed by delete_record(),
+    but the dynamically allocated name and scores members
+    are not freed first.
+
+    The message buffer is allocated once per message and is
+    never freed.
+
+    Valgrind reports these as "definitely lost", meaning no
+    pointer to the allocated memory remains reachable when
+    the program exits.
+
+    ERROR SUMMARY reports:
+        3 errors from 3 contexts
+
+    These three contexts correspond to the three memory leak
+    locations above.
