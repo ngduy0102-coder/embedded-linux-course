@@ -1,0 +1,30 @@
+===== LAB03 A1 QEMU + GDBSERVER RUNTIME CHECK =====
+
+[1] Kernel / Architecture
+Linux embedded-lab2 5.15.0 #1 SMP Sat Oct 24 11:00:40 +07 2026 armv7l GNU/Linux
+
+[2] gdbserver
+GNU gdbserver (GDB) 17.1
+gdbserver configured as "arm-linux-gnueabihf"
+
+[3] gdbserver help
+Usage: gdbserver [OPTIONS] COMM PROG [ARGS ...]
+Operating modes:
+  --attach
+  --multi
+  --once
+  --help
+  --version
+
+[4] ARM runtime loader
+-rwxr-xr-x 1 1000 1000 1.1M Apr 11 2026 /lib/ld-linux-armhf.so.3
+
+[5] ARM runtime libraries
+/lib/libc.so.6
+/lib/libgcc_s.so.1
+/lib/libstdc++.so.6 -> libstdc++.so.6.0.35
+
+[6] buggy_app
+-rwxrwxr-x 1 1000 1000 70.2K Nov 3 10:47 /usr/bin/buggy_app
+
+RESULT: PASS
