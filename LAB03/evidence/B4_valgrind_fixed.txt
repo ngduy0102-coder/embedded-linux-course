@@ -1,0 +1,45 @@
+LAB03 - Part B.4: Fix Memory Leaks
+===================================
+
+Target:
+    apps/leaky_app_fixed
+
+Fixes applied:
+
+1. In delete_record():
+       free(r->name);
+       free(r->scores);
+       free(r);
+
+2. In process_messages():
+       free(buf);
+
+Valgrind command:
+    valgrind --tool=memcheck ./leaky_app_fixed
+
+Observed result:
+    HEAP SUMMARY:
+        in use at exit: 0 bytes in 0 blocks
+        total heap usage: 352 allocs, 352 frees,
+        21,124 bytes allocated
+
+    All heap blocks were freed -- no leaks are possible
+
+    ERROR SUMMARY:
+        0 errors from 0 contexts
+
+Comparison with the original program:
+
+    Original:
+        16,900 bytes in 250 blocks definitely lost
+        3 leak contexts
+
+    Fixed:
+        0 bytes in 0 blocks lost
+        0 errors
+
+Conclusion:
+    The three intentional memory leaks were successfully fixed.
+    The name and scores allocations associated with each Record
+    are now released before freeing the Record itself.
+    The message buffer is also released after processing.

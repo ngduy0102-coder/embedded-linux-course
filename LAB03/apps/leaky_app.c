@@ -32,8 +32,8 @@ Record *create_record(int id, const char *name, int num_scores)
 /* Bug: free record nhưng QUÊN free r->name và r->scores */
 void delete_record(Record *r)
 {
-    /* free(r->name); */
-    /* free(r->scores); */
+    free(r->name);
+    free(r->scores);
     free(r);
 }
 
@@ -49,7 +49,7 @@ void process_messages(int count)
         if (i % 10 == 0)
             printf(" Processed: %s\n", buf);
 
-        /* free(buf); */
+        free(buf);
     }
 }
 
