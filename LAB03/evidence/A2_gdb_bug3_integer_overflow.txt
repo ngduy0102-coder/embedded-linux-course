@@ -1,0 +1,42 @@
+LAB-03 GDB Evidence - Bug 3: Integer Overflow
+Student: Nguyen Duy
+
+[1] Breakpoint at calculate()
+(gdb) break calculate
+Breakpoint 6 at 0x400702: file buggy_app.c, line 24.
+
+[2] Function arguments
+Breakpoint 6, calculate (a=100000, b=100000) at buggy_app.c:24
+24  int result = a * b;
+
+(gdb) print a
+$5 = 100000
+
+(gdb) print b
+$6 = 100000
+
+[3] Execute the multiplication
+(gdb) next
+25  printf("calculate(%d, %d) = %d\n", a, b, result);
+
+[4] Actual result
+(gdb) print result
+$7 = 1410065408
+
+[5] Conclusion
+The mathematical result is:
+100000 * 100000 = 10000000000
+
+A signed 32-bit int has maximum value:
+2147483647
+
+Therefore 10000000000 cannot be represented by int32.
+GDB reports result = 1410065408 instead of 10000000000,
+confirming signed integer overflow.
+
+Source:
+int calculate(int a, int b) {
+    int result = a * b;
+    printf("calculate(%d, %d) = %d\n", a, b, result);
+    return result;
+}
