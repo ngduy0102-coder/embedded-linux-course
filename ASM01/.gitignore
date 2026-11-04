@@ -1,0 +1,11 @@
+# Kernel module build artifacts
+*.ko
+*.o
+*.mod
+*.mod.c
+*.cmd
+Module.symvers
+modules.order
+
+# ARM test binaries
+test_asgn1_ioctl_arm
