@@ -1,4 +1,4 @@
-Script started on 2026-11-04 10:49:54+07:00 [COMMAND="qemu-system-arm \   -M vexpress-a9 \   -cpu cortex-a9 \   -m 512M \   -nographic \   -kernel ~/embedded_linux_course/LAB01/output/zImage \   -dtb ~/embedded_linux_course/LAB01/output/vexpress-v2p-ca9.dtb \   -initrd /tmp/asm1_initramfs.cpio.gz \   -append "console=ttyAMA0,115200"" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="230" LINES="55"]
+Script started on 2026-11-04 11:13:28+07:00 [COMMAND="qemu-system-arm \   -M vexpress-a9 \   -cpu cortex-a9 \   -m 512M \   -nographic \   -kernel ~/embedded_linux_course/LAB01/output/zImage \   -dtb ~/embedded_linux_course/LAB01/output/vexpress-v2p-ca9.dtb \   -initrd /tmp/asm1_initramfs.cpio.gz \   -append "console=ttyAMA0,115200"" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="230" LINES="55"]
 Booting Linux on physical CPU 0x0
 Linux version 5.15.0 (duy@duy-Precision-7550) (arm-linux-gnueabihf-gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0, GNU ld (GNU Binutils for Ubuntu) 2.46) #1 SMP Sat Oct 24 11:00:40 +07 2026
 CPU: ARMv7 Processor [410fc090] revision 0 (ARMv7), cr=10c5387d
@@ -50,8 +50,8 @@ clocksource: arm,sp804: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19
 Failed to initialize '/bus@40000000/motherboard-bus@40000000/iofpga@7,00000000/timer@12000': -22
 smp_twd: clock not found -2
 Console: colour dummy device 80x30
-Calibrating local timer... 95.26MHz.
-Calibrating delay loop... 1093.63 BogoMIPS (lpj=5468160)
+Calibrating local timer... 91.36MHz.
+Calibrating delay loop... 528.79 BogoMIPS (lpj=2643968)
 pid_max: default: 32768 minimum: 301
 Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
 Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
@@ -62,7 +62,7 @@ Setting up static identity map for 0x60100000 - 0x60100060
 rcu: Hierarchical SRCU implementation.
 smp: Bringing up secondary CPUs ...
 smp: Brought up 1 node, 1 CPU
-SMP: Total of 1 processors activated (1093.63 BogoMIPS).
+SMP: Total of 1 processors activated (528.79 BogoMIPS).
 CPU: All CPU(s) started in SVC mode.
 devtmpfs: initialized
 VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 0
@@ -147,10 +147,11 @@ printk: console [ttyAMA0] enabled
 1000b000.uart: ttyAMA2 at MMIO 0x1000b000 (irq = 39, base_baud = 0) is a PL011 rev1
 1000c000.uart: ttyAMA3 at MMIO 0x1000c000 (irq = 40, base_baud = 0) is a PL011 rev1
 rtc-pl031 10017000.rtc: registered as rtc0
-rtc-pl031 10017000.rtc: setting system clock to 2026-11-04T03:49:56 UTC (1793764196)
+rtc-pl031 10017000.rtc: setting system clock to 2026-11-04T04:13:30 UTC (1793765610)
 amba 10020000.clcd: Fixing up cyclic dependency with 0-0039
 drm-clcd-pl111 10020000.clcd: DVI muxed to daughterboard 1 (core tile) CLCD
 drm-clcd-pl111 10020000.clcd: initializing Versatile Express PL111
+input: AT Raw Set 2 keyboard as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10006000.kmi/serio0/input/input0
 sii902x 0-0039: supply iovcc not found, using dummy regulator
 sii902x 0-0039: supply cvcc12 not found, using dummy regulator
 i2c i2c-0: Added multiplexed i2c bus 2
@@ -164,13 +165,13 @@ drm-clcd-pl111 10020000.clcd: initializing Versatile Express PL111
 drm-clcd-pl111 10020000.clcd: found bridge on endpoint 0
 drm-clcd-pl111 10020000.clcd: Using non-panel bridge
 [drm] Initialized pl111 1.0.0 20170317 for 10020000.clcd on minor 0
-input: AT Raw Set 2 keyboard as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10006000.kmi/serio0/input/input0
 Console: switching to colour frame buffer device 128x48
 drm-clcd-pl111 10020000.clcd: [drm] fb0: pl111 frame buffer device
 ALSA device list:
   #0: ARM AC'97 Interface PL041 rev0 at 0x10004000, irq 32
 Freeing unused kernel image (initmem) memory: 1024K
 Run /init as init process
+input: ImExPS/2 Generic Explorer Mouse as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10007000.kmi/serio1/input/input2
 mount: mounting sysfs on /sys failed: Device or resource busy
 ======================================
  ASM1 - EMBEDDED LINUX ASSIGNMENT
@@ -178,23 +179,20 @@ mount: mounting sysfs on /sys failed: Device or resource busy
 ======================================
 ASM1 environment ready.
 
-Please press Enter to activate this console. input: ImExPS/2 Generic Explorer Mouse as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10007000.kmi/serio1/input/input2
-random: fast init done
+Please press Enter to activate this console. random: fast init done
 
-/ # echo "===== ASM1 TASK 2 TEST ====="
-===== ASM1 TASK 2 TEST =====
-/ # 
-/ # /bin/sh /usr/bin/test_counter.sh
+/ # /usr/bin/test_counter.sh
 ===== TASK 2: COUNTER MISC DEVICE TEST =====
+
 [1] Load driver
 counter_driver: loading out-of-tree module taints kernel.
 counter_driver: /dev/counter registered
 counter_driver: /proc/counter_info created
 
 [2] Check device
-crw-rw-rw-    1 root     0          10, 125 Nov  4 03:50 [1;35m/dev/counter[m
+crw-rw-rw-    1 root     0          10, 125 Nov  4 04:13 [1;35m/dev/counter[m
 
-[3] Initial /proc statistics
+[3] Initial statistics
 Current counter: 0
 Total reads/increments: 0
 Total writes/resets: 0
@@ -207,31 +205,53 @@ Second read:
 counter_driver: read value=1
 1
 
-[5] WRITE test
+[5] WRITE test: set counter to 10
 counter_driver: counter set to 10
+Statistics immediately after write:
+Current counter: 10
+Total reads/increments: 2
+Total writes/resets: 1
+Read after write:
 counter_driver: read value=10
 10
 
-[6] RESET test
+[6] RESET test: set counter to 0
 counter_driver: counter set to 0
+Statistics immediately after reset:
+Current counter: 0
+Total reads/increments: 3
+Total writes/resets: 2
+Read after reset:
 counter_driver: read value=0
 0
 
-[7] Invalid input test
+[7] Invalid input tests
 sh: write error: Invalid argument
+[PASS] Nonnumeric input rejected
 sh: write error: Invalid argument
+[PASS] Negative input rejected
 
 [8] Final statistics
 Current counter: 1
 Total reads/increments: 4
 Total writes/resets: 2
 
-[9] Unload driver
-counter_driver: module unloaded
-ls: /dev/counter: No such file or directory
-cat: can't open '/proc/counter_info': No such file or directory
+[9] Driver kernel messages
+counter_driver: loading out-of-tree module taints kernel.
+counter_driver: /dev/counter registered
+counter_driver: /proc/counter_info created
+counter_driver: read value=0
+counter_driver: read value=1
+counter_driver: counter set to 10
+counter_driver: read value=10
+counter_driver: counter set to 0
+counter_driver: read value=0
 
-===== TEST COMPLETE =====
+[10] Unload driver
+counter_driver: module unloaded
+[PASS] Driver unloaded
+
+===== ALL TASK 2 TESTS COMPLETED =====
 / # QEMU: Terminated
 
-Script done on 2026-11-04 10:50:06+07:00 [COMMAND_EXIT_CODE="0"]
+Script done on 2026-11-04 11:14:00+07:00 [COMMAND_EXIT_CODE="0"]

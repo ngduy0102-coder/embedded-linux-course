@@ -1,4 +1,4 @@
-Script started on 2026-11-04 10:49:33+07:00 [COMMAND="qemu-system-arm \   -M vexpress-a9 \   -cpu cortex-a9 \   -m 512M \   -nographic \   -kernel ~/embedded_linux_course/LAB01/output/zImage \   -dtb ~/embedded_linux_course/LAB01/output/vexpress-v2p-ca9.dtb \   -initrd /tmp/asm1_initramfs.cpio.gz \   -append "console=ttyAMA0,115200"" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="230" LINES="55"]
+Script started on 2026-11-04 11:12:44+07:00 [COMMAND="qemu-system-arm \   -M vexpress-a9 \   -cpu cortex-a9 \   -m 512M \   -nographic \   -kernel ~/embedded_linux_course/LAB01/output/zImage \   -dtb ~/embedded_linux_course/LAB01/output/vexpress-v2p-ca9.dtb \   -initrd /tmp/asm1_initramfs.cpio.gz \   -append "console=ttyAMA0,115200"" TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="230" LINES="55"]
 Booting Linux on physical CPU 0x0
 Linux version 5.15.0 (duy@duy-Precision-7550) (arm-linux-gnueabihf-gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0, GNU ld (GNU Binutils for Ubuntu) 2.46) #1 SMP Sat Oct 24 11:00:40 +07 2026
 CPU: ARMv7 Processor [410fc090] revision 0 (ARMv7), cr=10c5387d
@@ -50,8 +50,8 @@ clocksource: arm,sp804: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19
 Failed to initialize '/bus@40000000/motherboard-bus@40000000/iofpga@7,00000000/timer@12000': -22
 smp_twd: clock not found -2
 Console: colour dummy device 80x30
-Calibrating local timer... 95.06MHz.
-Calibrating delay loop... 1007.61 BogoMIPS (lpj=5038080)
+Calibrating local timer... 92.94MHz.
+Calibrating delay loop... 718.02 BogoMIPS (lpj=3590144)
 pid_max: default: 32768 minimum: 301
 Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
 Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
@@ -62,7 +62,7 @@ Setting up static identity map for 0x60100000 - 0x60100060
 rcu: Hierarchical SRCU implementation.
 smp: Bringing up secondary CPUs ...
 smp: Brought up 1 node, 1 CPU
-SMP: Total of 1 processors activated (1007.61 BogoMIPS).
+SMP: Total of 1 processors activated (718.02 BogoMIPS).
 CPU: All CPU(s) started in SVC mode.
 devtmpfs: initialized
 VFP support v0.3: implementor 41 architecture 3 part 30 variant 9 rev 0
@@ -147,7 +147,7 @@ printk: console [ttyAMA0] enabled
 1000b000.uart: ttyAMA2 at MMIO 0x1000b000 (irq = 39, base_baud = 0) is a PL011 rev1
 1000c000.uart: ttyAMA3 at MMIO 0x1000c000 (irq = 40, base_baud = 0) is a PL011 rev1
 rtc-pl031 10017000.rtc: registered as rtc0
-rtc-pl031 10017000.rtc: setting system clock to 2026-11-04T03:49:35 UTC (1793764175)
+rtc-pl031 10017000.rtc: setting system clock to 2026-11-04T04:12:47 UTC (1793765567)
 amba 10020000.clcd: Fixing up cyclic dependency with 0-0039
 drm-clcd-pl111 10020000.clcd: DVI muxed to daughterboard 1 (core tile) CLCD
 drm-clcd-pl111 10020000.clcd: initializing Versatile Express PL111
@@ -159,18 +159,19 @@ drm-clcd-pl111 1001f000.clcd: using device-specific reserved memory
 drm-clcd-pl111 1001f000.clcd: core tile graphics present
 drm-clcd-pl111 1001f000.clcd: this device will be deactivated
 drm-clcd-pl111 1001f000.clcd: Versatile Express init failed - -19
+input: AT Raw Set 2 keyboard as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10006000.kmi/serio0/input/input0
 drm-clcd-pl111 10020000.clcd: DVI muxed to daughterboard 1 (core tile) CLCD
 drm-clcd-pl111 10020000.clcd: initializing Versatile Express PL111
 drm-clcd-pl111 10020000.clcd: found bridge on endpoint 0
 drm-clcd-pl111 10020000.clcd: Using non-panel bridge
 [drm] Initialized pl111 1.0.0 20170317 for 10020000.clcd on minor 0
-input: AT Raw Set 2 keyboard as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10006000.kmi/serio0/input/input0
 Console: switching to colour frame buffer device 128x48
 drm-clcd-pl111 10020000.clcd: [drm] fb0: pl111 frame buffer device
 ALSA device list:
   #0: ARM AC'97 Interface PL041 rev0 at 0x10004000, irq 32
 Freeing unused kernel image (initmem) memory: 1024K
 Run /init as init process
+input: ImExPS/2 Generic Explorer Mouse as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10007000.kmi/serio1/input/input2
 mount: mounting sysfs on /sys failed: Device or resource busy
 ======================================
  ASM1 - EMBEDDED LINUX ASSIGNMENT
@@ -178,67 +179,107 @@ mount: mounting sysfs on /sys failed: Device or resource busy
 ======================================
 ASM1 environment ready.
 
-Please press Enter to activate this console. input: ImExPS/2 Generic Explorer Mouse as /devices/platform/bus@40000000/bus@40000000:motherboard-bus@40000000/bus@40000000:motherboard-bus@40000000:iofpga@7,00000000/10007000.kmi/serio1/input/input2
-random: fast init done
-
-/ # echo "===== ASM1 TASK 1 TEST ====="
-===== ASM1 TASK 1 TEST =====
+Please press Enter to activate this console. 
 / # 
-/ # insmod /lib/modules/5.15.0/asgn1_driver.ko
+/ # random: fast init done
+insmod /lib/modules/5.15.0/asgn1_driver.ko
 asgn1_driver: loading out-of-tree module taints kernel.
 asgn1_driver: initializing...
-/ # 
-/ # ls -l /dev/asgn1
-crw-------    1 root     0         241,   0 Nov  4 03:49 [1;35m/dev/asgn1[m
-/ # 
 / # /usr/bin/test_asgn1_ioctl
+
+===== TASK 1 IOCTL DRIVER TEST =====
 asgn1_driver: device opened (count=1)
-Device opened successfully
+[PASS] Device opened successfully
 asgn1_driver: ioctl cmd=0x80404104
 asgn1_driver: ioctl GET_VERSION
-Driver version: asgn1_driver v1.0 - SE192916
+[PASS] Driver version: asgn1_driver v1.0 - SE192916
+
+[TEST 1] Kernel mode
+asgn1_driver: ioctl cmd=0x40044103
+asgn1_driver: ioctl SET_MODE mode=0
+asgn1_driver: received 12 bytes: [[KERNEL]Hello Kernel]
+asgn1_driver: device closed
+asgn1_driver: device opened (count=2)
+asgn1_driver: sent 20 bytes to user
+Read data: [[KERNEL]Hello Kernel]
+[PASS] Kernel mode prefix verified
+
+[TEST 2] Echo mode
 asgn1_driver: ioctl cmd=0x40044103
 asgn1_driver: ioctl SET_MODE mode=1
-Driver mode set to: 1
 asgn1_driver: received 10 bytes: [Hello ASM1]
-Write returned: 10
+asgn1_driver: device closed
+asgn1_driver: device opened (count=3)
 asgn1_driver: sent 10 bytes to user
-Read returned: 10
-Read data: Hello ASM1
+Read data: [Hello ASM1]
+[PASS] Echo mode verified
+
+[TEST 3] GET_STATS
 asgn1_driver: ioctl cmd=0x80144102
 asgn1_driver: ioctl GET_STATS
-Stats:
-  open_count      = 1
-  write_count     = 1
-  read_count      = 1
-  buffer_len      = 10
-  last_write_size = 10
+open_count      = 3
+write_count     = 2
+read_count      = 2
+buffer_len      = 10
+last_write_size = 10
+
+[TEST 4] Invalid mode
+asgn1_driver: ioctl cmd=0x40044103
+[PASS] Invalid mode rejected: Invalid argument
+
+[TEST 5] RESET_BUFFER and EOF
 asgn1_driver: ioctl cmd=0x4101
 asgn1_driver: ioctl RESET_BUFFER
-Buffer reset successfully
+[PASS] Buffer reset successfully
 asgn1_driver: ioctl cmd=0x80144102
 asgn1_driver: ioctl GET_STATS
-Stats after reset:
-  write_count     = 0
-  read_count      = 0
-  buffer_len      = 0
-  last_write_size = 10
-asgn1_driver: ioctl cmd=0x1234
-Invalid ioctl correctly rejected: Inappropriate ioctl for device
+write_count     = 0
+read_count      = 0
+buffer_len      = 0
+last_write_size = 10
 asgn1_driver: device closed
-/ # 
-/ # echo "===== TASK 1 MODULE INFO ====="
-===== TASK 1 MODULE INFO =====
-/ # cat /proc/lab2_info
-cat: can't open '/proc/lab2_info': No such file or directory
-/ # 
+asgn1_driver: device opened (count=4)
+[PASS] Read after reset returned EOF (0 bytes)
+
+[TEST 6] Invalid ioctl
+asgn1_driver: ioctl cmd=0x1234
+[PASS] Invalid ioctl rejected: Inappropriate ioctl for device
+asgn1_driver: device closed
+
+===== ALL TASK 1 TESTS PASSED =====
+/ # echo "===== DMESG ====="
+===== DMESG =====
+/ # dmesg | grep 'asgn1_driver'
+asgn1_driver: loading out-of-tree module taints kernel.
+asgn1_driver: initializing...
+asgn1_driver: device opened (count=1)
+asgn1_driver: ioctl cmd=0x80404104
+asgn1_driver: ioctl GET_VERSION
+asgn1_driver: ioctl cmd=0x40044103
+asgn1_driver: ioctl SET_MODE mode=0
+asgn1_driver: received 12 bytes: [[KERNEL]Hello Kernel]
+asgn1_driver: device closed
+asgn1_driver: device opened (count=2)
+asgn1_driver: sent 20 bytes to user
+asgn1_driver: ioctl cmd=0x40044103
+asgn1_driver: ioctl SET_MODE mode=1
+asgn1_driver: received 10 bytes: [Hello ASM1]
+asgn1_driver: device closed
+asgn1_driver: device opened (count=3)
+asgn1_driver: sent 10 bytes to user
+asgn1_driver: ioctl cmd=0x80144102
+asgn1_driver: ioctl GET_STATS
+asgn1_driver: ioctl cmd=0x40044103
+asgn1_driver: ioctl cmd=0x4101
+asgn1_driver: ioctl RESET_BUFFER
+asgn1_driver: ioctl cmd=0x80144102
+asgn1_driver: ioctl GET_STATS
+asgn1_driver: device closed
+asgn1_driver: device opened (count=4)
+asgn1_driver: ioctl cmd=0x1234
+asgn1_driver: device closed
 / # rmmod asgn1_driver
 asgn1_driver: unloaded
-/ # 
-/ # echo "===== TASK 1 FINISHED ====="
-===== TASK 1 FINISHED =====
-/ # 
-/ # 
 / # QEMU: Terminated
 
-Script done on 2026-11-04 10:49:51+07:00 [COMMAND_EXIT_CODE="0"]
+Script done on 2026-11-04 11:13:18+07:00 [COMMAND_EXIT_CODE="0"]
