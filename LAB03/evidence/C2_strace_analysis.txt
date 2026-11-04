@@ -1,0 +1,34 @@
+LAB03 - Part C.2: System Call Analysis using strace
+
+Environment:
+- Host: Ubuntu Linux x86-64
+- Tool: strace
+
+1. Full system call trace:
+- File: logs/strace_full.txt
+- Total lines: 126
+
+2. System call summary:
+- File: logs/strace_summary.txt
+- Total system calls: 124
+- Total system call time: 0.000538 seconds
+
+Main observations:
+- write(): 75 calls, 88.48% of measured syscall time.
+- openat(): 4 calls, 10.97% of measured syscall time.
+- read(): 2 calls.
+- close(): 4 calls.
+- mmap(): 14 calls.
+
+3. File I/O observations:
+- The program opens /tmp/perf_test.txt using openat().
+- The file is opened with O_WRONLY | O_CREAT | O_TRUNC.
+- Data is written through multiple write() calls.
+- Each observed write() transfers approximately 4096 bytes.
+- The C standard I/O library buffers output, so 10000 fprintf()
+  operations do not produce 10000 write() system calls.
+
+4. Interpretation:
+- write() dominates the measured system call time.
+- heavy_compute() and linear_search() mainly execute in user space.
+- strace measures system calls, not the complete CPU execution time.
