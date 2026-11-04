@@ -1,0 +1,143 @@
+LAB03 - PART C: PROFILING AND PERFORMANCE ANALYSIS
+===================================================
+
+1. C.3 - NATIVE X86-64 PROFILING
+--------------------------------
+
+Tools:
+- strace 6.19
+- perf 7.0.14
+- GCC native compiler
+
+Source:
+- apps/perf_target.c
+
+Perf record:
+- Samples collected: 216
+- Lost samples: 0
+- Event: cpu/cycles/P
+
+Important perf report observations:
+- __ieee754_log_fma: 48.89% Self
+- heavy_compute: 34.22% (reported Self/Children)
+- log@@GLIBC_2.29: 9.56% Children
+- io_intensive: 1.86% Children
+
+The profiling results indicate that mathematical computation,
+especially log() inside heavy_compute(), is a major CPU cost.
+The I/O routine contributes a much smaller portion.
+
+Perf stat:
+- Context switches: 9
+- CPU migrations: 0
+- Page faults: 377
+- Task clock: 107.79 ms
+- CPU cycles: 131,678,350
+- Instructions: 369,939,483
+- Branches: 52,716,153
+- Branch misses: 14,170
+- Elapsed time: 0.109516463 seconds
+- User time: 0.103340 seconds
+- System time: 0.005961 seconds
+
+Note: perf report percentages are sampling estimates, not exact
+runtime percentages. Some symbols were unresolved as [unknown].
+
+2. C.4 - ARM CROSS-COMPILATION
+------------------------------
+
+Compiler:
+arm-linux-gnueabihf-gcc
+
+Architecture:
+- ARMv7-A
+- Cortex-A9 compatible
+- VFPv3-D16
+- Hard-float ABI
+
+ELF interpreter:
+/lib/ld-linux-armhf.so.3
+
+Binary:
+apps/perf_target_arm
+
+The ARM binary was copied to:
+/usr/bin/perf_target_arm
+
+It was included in output/initramfs.cpio.gz.
+The existing leaky_app_arm and leaky_app_measure_arm
+were also verified in the rebuilt initramfs.
+
+3. ARM/QEMU EXECUTION
+---------------------
+
+Environment:
+- QEMU machine: vexpress-a9
+- CPU: Cortex-A9
+- RAM: 512 MB
+- CPUs: 2
+- Guest architecture: ARMv7
+
+Three successful runs:
+
+Run    Real (s)    User (s)    Sys (s)
+1      2.06        1.98        0.07
+2      1.51        1.46        0.04
+3      1.90        1.87        0.02
+
+Average:
+- Real: 1.823 s
+- User: 1.770 s
+- Sys: 0.043 s
+
+The application completed successfully and generated
+/tmp/perf_test.txt with 10,000 lines.
+
+4. NATIVE X86-64 EXECUTION
+--------------------------
+
+Three successful runs:
+
+Run    Real (s)    User (s)    Sys (s)
+1      0.142       0.139       0.003
+2      0.057       0.056       0.001
+3      0.046       0.045       0.001
+
+Average:
+- Real: 0.082 s
+- User: 0.080 s
+- Sys: 0.002 s
+
+All three runs completed successfully and generated
+/tmp/perf_test.txt with 10,000 lines.
+
+5. COMPARISON AND LIMITATIONS
+-----------------------------
+
+Average elapsed time:
+- ARM/QEMU: 1.823 seconds
+- Native x86-64: 0.082 seconds
+
+ARM/QEMU took approximately 22.3 times longer based on
+the arithmetic mean of these three runs.
+
+The native x86-64 measurements showed some variation
+(0.046 to 0.142 seconds). Therefore, the average is
+sensitive to the first run. The median native runtime
+was 0.057 seconds.
+
+Important limitations:
+- QEMU execution is emulation, not a physical ARM benchmark.
+- QEMU timing is affected by host load and emulation overhead.
+- The comparison is indicative, not a direct comparison
+  of physical ARM and x86-64 CPU performance.
+- strace and perf were not available inside the ARM guest.
+  Therefore, direct ARM syscall profiling was not performed.
+- Host x86-64 syscall results must not be treated as ARM
+  syscall results.
+
+Conclusion:
+Part C source implementation, host profiling, ARM
+cross-compilation, QEMU execution, and timing comparison
+were completed. Direct syscall profiling inside ARM/QEMU
+remains a limitation.
