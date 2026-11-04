@@ -1,0 +1,6 @@
+# /dev/cpu_dma_latency set to 0us
+policy: fifo: loadavg: 1.14 0.98 0.80 20/1296 13076          
+
+T: 0 (    0) P:80 I:1000 C:      0 Min:1000000 Act:    0 Avg:    0 Max:       0
+T: 1 (    0) P:80 I:1000 C:      0 Min:1000000 Act:    0 Avg:    0 Max:       0
+T: 2 (    0) P:80 I:1000 C:      0 Min:1000000 Act:    0 Avg:    0 Max:       0

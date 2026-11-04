@@ -100,15 +100,25 @@ C3 and C4 results are documented in:
 
 ### Part D – Real-Time Analysis
 
-Planned tasks:
+**D1:** Reviewed cyclictest, wake-up latency, Min/Avg/Max, histogram, and overflow metrics.
 
-- D1: Understand cyclictest and latency metrics.
-- D2: Measure latency using the standard kernel.
-- D3: Generate latency histogram.
-- D4: Analyze latency results.
-- D5: Compare standard kernel and PREEMPT_RT theoretically.
+**D2:** Completed host-side cyclictest measurement using four SCHED_FIFO threads under CPU, I/O, and memory stress. The tested kernel was `7.0.0-42-generic` with PREEMPT_DYNAMIC enabled and PREEMPT_RT disabled.
 
-Status: Not started.
+Measured results:
+- Min latency: 2 us on all four threads.
+- Average latency: 3 us on all four threads.
+- Maximum latency: 266 us (Thread 1).
+- Stress-ng: 18 stressors passed, 0 failed.
+
+**D3:** Generated `logs/latency_histogram.png` from `logs/hist_standard.txt`.
+
+**D4:** Analyzed the histogram: 39,998 samples recorded, 99.98% below 50 us, and two histogram overflows. The actual maximum latency was 266 us according to cyclictest.
+
+**D5:** Compared the standard kernel and PREEMPT_RT theoretically. No PREEMPT_RT kernel was installed or benchmarked.
+
+Evidence: `evidence/D1_D5_realtime_analysis.txt`
+
+Status: Completed. Standard-kernel measurement is empirical; PREEMPT_RT comparison is theoretical.
 
 ## 5. Git Milestones
 

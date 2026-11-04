@@ -1,0 +1,116 @@
+LAB03 - PART D: REAL-TIME ANALYSIS
+=================================
+
+D1. CYCLICTEST OVERVIEW
+----------------------
+cyclictest measures the wake-up latency of periodic real-time threads.
+Latency is the difference between the expected wake-up time and the
+actual wake-up time.
+
+Metrics:
+- Min: minimum observed latency.
+- Avg: average observed latency.
+- Max: maximum observed latency.
+- Histogram: distribution of measured latency samples.
+- Histogram overflow: samples exceeding the configured histogram range.
+
+D2. STANDARD KERNEL MEASUREMENT
+------------------------------
+Test environment:
+- Host: Ubuntu Linux x86_64
+- CPU: Intel Core i7-10850H @ 2.70GHz
+- Logical CPUs: 12
+- Kernel: 7.0.0-42-generic
+- Kernel preemption: PREEMPT_DYNAMIC
+- CONFIG_PREEMPT_RT: not set
+- CPU governor: powersave
+
+Cyclictest configuration:
+- Threads: 4
+- Scheduling policy: SCHED_FIFO
+- Priority: 80
+- Interval: 1000 us
+- Loops: 10000 per thread
+- Histogram range: 200 us
+
+System load:
+stress-ng --cpu 12 --io 4 --vm 2 --vm-bytes 256M --timeout 60s
+
+Stress-ng result:
+- Duration: 60 seconds
+- Stressors passed: 18
+- Failed: 0
+- Skipped: 0
+- Metrics untrustworthy: 0
+- Run completed successfully.
+
+Cyclictest results:
+
+Thread    Min (us)    Avg (us)    Max (us)
+0         2           3           56
+1         2           3           266
+2         2           3           212
+3         2           3           115
+
+D3. LATENCY HISTOGRAM
+---------------------
+Generated graph:
+logs/latency_histogram.png
+
+Raw histogram:
+logs/hist_standard.txt
+
+The graph contains four data series, one for each cyclictest thread.
+The displayed x-axis range is 0-200 us.
+
+D4. RESULT ANALYSIS
+-------------------
+- Minimum latency across threads: 2 us.
+- Average latency reported by each thread: 3 us.
+- Worst observed latency: 266 us (Thread 1).
+- Thread 2 maximum latency: 212 us.
+- Histogram recorded 39,998 samples out of 40,000 cycles.
+- 99.98% of recorded histogram samples were below 50 us.
+- Histogram overflow: 1 sample in Thread 1 and 1 sample in Thread 2.
+
+The histogram was configured for a maximum range of 200 us.
+Therefore, the two overflow samples (266 us and 212 us) are not
+represented in the plotted histogram. The cyclictest summary is
+the source for the actual maximum latency.
+
+The low average latency does not eliminate occasional latency spikes.
+The maximum latency is important when evaluating real-time behavior.
+
+The CPU governor was set to powersave during this experiment.
+This is a limitation and should be considered when interpreting
+the measured results.
+
+D5. STANDARD KERNEL VS PREEMPT_RT (THEORETICAL)
+-----------------------------------------------
+Standard kernel tested:
+- PREEMPT_DYNAMIC enabled.
+- PREEMPT_RT not enabled.
+- Measured maximum latency: 266 us.
+
+PREEMPT_RT (theoretical comparison):
+- Converts most interrupt handlers into threaded IRQ handlers.
+- Makes more kernel execution paths preemptible.
+- Uses real-time locking mechanisms, including priority inheritance.
+- Aims to reduce and improve the predictability of worst-case latency.
+
+PREEMPT_RT is generally more suitable for demanding real-time workloads.
+However, it does not guarantee zero latency. Actual results depend on
+hardware, drivers, kernel configuration, and system workload.
+
+No PREEMPT_RT kernel was installed or measured in this experiment.
+This comparison is theoretical, not a measured benchmark.
+
+CONCLUSION
+----------
+The standard Ubuntu kernel achieved an average latency of 3 us per
+thread under the tested workload, but the worst observed latency was
+266 us. The histogram shows that almost all recorded samples were
+below 50 us, while two samples exceeded the 200 us histogram range.
+
+The experiment demonstrates why maximum latency and latency
+distribution are important when evaluating real-time systems.
