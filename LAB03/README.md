@@ -59,7 +59,7 @@ LAB03/
 | C1 | Implement performance profiling application | Completed |
 | C2 | System call analysis using strace | Completed |
 | C3 | CPU profiling using perf | Completed |
-| C4 | ARM cross-compilation and QEMU performance comparison | Partially completed |
+| C4 | ARM cross-compilation, QEMU performance comparison and ARM syscall profiling | Completed |
 | D1–D5 | Real-time latency analysis | Not started |
 | Report | Final lab report | Pending |
 
@@ -96,7 +96,7 @@ C3 and C4 results are documented in:
 
 `evidence/C3_C4_profiling_comparison.txt`
 
-**C4 limitation:** The ARM application was successfully executed in QEMU and its execution time was measured. However, direct ARM-side `strace` profiling was not completed because `strace` was unavailable in the guest environment.
+**C4:** Cross-compiled and executed the ARM application in QEMU, measured execution time, and performed ARM-side system call profiling using `strace -c` inside the guest. The syscall summary recorded 127 calls, with `write()` accounting for 28.00% of syscall time.
 
 ### Part D – Real-Time Analysis
 

@@ -131,13 +131,59 @@ Important limitations:
 - QEMU timing is affected by host load and emulation overhead.
 - The comparison is indicative, not a direct comparison
   of physical ARM and x86-64 CPU performance.
-- strace and perf were not available inside the ARM guest.
-  Therefore, direct ARM syscall profiling was not performed.
-- Host x86-64 syscall results must not be treated as ARM
-  syscall results.
+- ARM-side strace profiling was subsequently completed inside
+  the QEMU guest. Host x86-64 syscall results remain separate
+  and must not be treated as ARM syscall results.
 
 Conclusion:
 Part C source implementation, host profiling, ARM
-cross-compilation, QEMU execution, and timing comparison
-were completed. Direct syscall profiling inside ARM/QEMU
-remains a limitation.
+cross-compilation, QEMU execution, timing comparison, and
+direct ARM-side syscall profiling using strace were completed.
+
+6. C.4 - ARM SYSTEM CALL PROFILING WITH STRACE
+----------------------------------------------
+
+Environment:
+- QEMU: vexpress-a9, Cortex-A9
+- Guest architecture: ARMv7
+- strace version: 6.19
+- ARM executable: /usr/bin/perf_target_arm
+
+Command:
+strace -c /usr/bin/perf_target_arm
+
+Application result:
+- CPU-intensive computation completed.
+- Linear search completed.
+- I/O operation wrote 10,000 lines.
+- Application printed "Done." successfully.
+
+System call summary:
+- Total system calls: 127
+- Total syscall time: 0.034206 seconds
+- Errors: 7
+
+Important observations:
+
+Syscall    Calls    Time (s)    Time (%)
+write      75       0.009579    28.00
+execve     1        0.009461    27.66
+munmap     6        0.003496    10.22
+mmap2      10       0.002728    7.98
+openat     6        0.002566    7.50
+statx      6        0.002311    6.76
+mprotect   6        0.002037    5.96
+
+The write() syscall was the most frequent syscall (75 calls)
+and consumed 28.00% of the measured syscall time.
+execve() had one call but consumed 27.66% of syscall time.
+
+Note:
+The 0.034206 seconds represents accumulated time spent in
+system calls, not the total application wall-clock runtime.
+The application completed successfully despite 7 syscall errors.
+
+Conclusion:
+C4 now includes ARM cross-compilation, QEMU execution,
+execution-time comparison, and direct ARM-side syscall
+profiling using strace inside the QEMU guest.
