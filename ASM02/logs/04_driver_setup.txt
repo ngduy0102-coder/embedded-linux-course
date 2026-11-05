@@ -1,0 +1,39 @@
+===== ASM02 DRIVER BUILD CONFIG =====
+KDIR := $(abspath $(CURDIR)/../../LAB01/kernel/linux-5.15)
+ARCH := arm
+CROSS_COMPILE := arm-linux-gnueabihf-
+
+obj-m += sms_sensor_driver.o
+
+all:
+	$(MAKE) -C $(KDIR) M=$(CURDIR) ARCH=$(ARCH) \
+		CROSS_COMPILE=$(CROSS_COMPILE) KCFLAGS="-msoft-float" modules
+
+clean:
+	$(MAKE) -C $(KDIR) M=$(CURDIR) ARCH=$(ARCH) \
+		CROSS_COMPILE=$(CROSS_COMPILE) clean
+
+===== SMS SHARED HEADER =====
+#ifndef SMS_SENSOR_H
+#define SMS_SENSOR_H
+
+#include <linux/ioctl.h>
+
+#ifdef __KERNEL__
+#include <linux/types.h>
+typedef __u32 sms_u32;
+#else
+#include <stdint.h>
+typedef uint32_t sms_u32;
+#endif
+
+#define SMS_SENSOR_DEVICE "/dev/sms_sensor"
+#define SMS_SENSOR_PROC   "/proc/sms_stats"
+
+#define SMS_IOCTL_MAGIC  'S'
+#define SMS_SET_INTERVAL _IOW(SMS_IOCTL_MAGIC, 1, sms_u32)
+
+#define SMS_DEFAULT_INTERVAL_MS 100
+#define SMS_MIN_INTERVAL_MS     10
+
+#endif

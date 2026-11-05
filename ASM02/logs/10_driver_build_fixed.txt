@@ -1,0 +1,4 @@
+make: Entering directory '/home/duy/embedded_linux_course/ASM02/driver'
+make -C /home/duy/embedded_linux_course/LAB01/kernel/linux-5.15 M=/home/duy/embedded_linux_course/ASM02/driver ARCH=arm \
+	CROSS_COMPILE=arm-linux-gnueabihf- KCFLAGS="-march=armv7-a -marm -msoft-float -mabi=aapcs-linux -mfpu=vfp -Wa,-march=armv7-a" modules
+make: Leaving directory '/home/duy/embedded_linux_course/ASM02/driver'

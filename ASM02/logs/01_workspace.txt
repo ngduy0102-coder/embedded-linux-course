@@ -1,0 +1,19 @@
+===== ASM02 WORKSPACE =====
+Wed Nov  4 11:18:31 AM +07 2026
+/home/duy/embedded_linux_course
+
+===== KERNEL =====
+5.15.0
+
+===== ARM COMPILER =====
+arm-linux-gnueabihf-gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+
+===== QEMU =====
+QEMU emulator version 10.2.1 (Debian 1:10.2.1+ds-1ubuntu3.2)
+
+===== DIRECTORY STRUCTURE =====
+ASSIGNMENT02
+ASSIGNMENT02/app
+ASSIGNMENT02/driver
+ASSIGNMENT02/logs
+ASSIGNMENT02/output

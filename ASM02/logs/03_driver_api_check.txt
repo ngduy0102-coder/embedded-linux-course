@@ -1,0 +1,25 @@
+===== TIME API =====
+164:static inline s64 ktime_to_ms(const ktime_t kt)
+176:	return ktime_to_ms(ktime_sub(later, earlier));
+
+===== CHARACTER DEVICE API =====
+LAB01/kernel/linux-5.15/include/linux/fs.h:2791:extern int alloc_chrdev_region(dev_t *, unsigned, unsigned, const char *);
+LAB01/kernel/linux-5.15/include/linux/cdev.h:23:void cdev_init(struct cdev *, const struct file_operations *);
+LAB01/kernel/linux-5.15/include/linux/cdev.h:29:int cdev_add(struct cdev *, dev_t, unsigned);
+
+===== DEVICE CLASS API =====
+153:int device_create_file(struct device *device,
+159:int __must_check device_create_bin_file(struct device *dev,
+898:device_create(struct class *cls, struct device *parent, dev_t devt,
+901:device_create_with_groups(struct class *cls, struct device *parent, dev_t devt,
+
+===== PROC API =====
+29:struct proc_ops {
+107:					       const struct proc_ops *,
+110:struct proc_dir_entry *proc_create(const char *name, umode_t mode, struct proc_dir_entry *parent, const struct proc_ops *proc_ops);
+181:#define proc_create(name, mode, parent, proc_ops) ({NULL;})
+
+===== CURRENT ASM02 FILES =====
+ASSIGNMENT02/logs/01_workspace.txt
+ASSIGNMENT02/logs/02_kernel_check.txt
+ASSIGNMENT02/logs/03_driver_api_check.txt

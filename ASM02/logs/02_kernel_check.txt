@@ -1,0 +1,32 @@
+===== ASM02 KERNEL CONFIG =====
+CONFIG_MODULES=y
+CONFIG_DEVTMPFS=y
+CONFIG_PROC_FS=y
+
+===== REQUIRED KERNEL APIs =====
+52:u32 get_random_u32(void);
+56:	return get_random_u32();
+63:	return get_random_u32();
+90:struct proc_dir_entry *proc_create_mount_point(const char *name);
+92:struct proc_dir_entry *proc_create_seq_private(const char *name, umode_t mode,
+95:#define proc_create_seq_data(name, mode, parent, ops, data) \
+96:	proc_create_seq_private(name, mode, parent, ops, 0, data)
+97:#define proc_create_seq(name, mode, parent, ops) \
+98:	proc_create_seq_private(name, mode, parent, ops, 0, NULL)
+99:struct proc_dir_entry *proc_create_single_data(const char *name, umode_t mode,
+102:#define proc_create_single(name, mode, parent, show) \
+103:	proc_create_single_data(name, mode, parent, show, NULL)
+105:extern struct proc_dir_entry *proc_create_data(const char *, umode_t,
+80: * For raw_copy_to_user() it's the other way round.
+118: * __copy_to_user_inatomic: - Copy a block of data into user space, with less checking.
+131:__copy_to_user_inatomic(void __user *to, const void *from, unsigned long n)
+135:	instrument_copy_to_user(to, from, n);
+137:	return raw_copy_to_user(to, from, n);
+141:__copy_to_user(void __user *to, const void *from, unsigned long n)
+146:	instrument_copy_to_user(to, from, n);
+148:	return raw_copy_to_user(to, from, n);
+172:_copy_to_user(void __user *to, const void *from, unsigned long n)
+178:		instrument_copy_to_user(to, from, n);
+
+===== KERNEL MODULE BUILD DIRECTORY =====
+drwxrwxr-x 24 duy duy 4096 Oct 28 01:44 LAB01/kernel/linux-5.15

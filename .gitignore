@@ -30,3 +30,12 @@ LAB02/driver/*.mod.c
 LAB02/driver/Module.symvers
 LAB02/driver/modules.order
 LAB02/driver/.lab2_driver*
+
+# ASM02 driver build artifacts
+ASM02/driver/*.o
+ASM02/driver/*.ko
+ASM02/driver/*.mod
+ASM02/driver/*.mod.c
+ASM02/driver/Module.symvers
+ASM02/driver/modules.order
+ASM02/driver/.*.cmd

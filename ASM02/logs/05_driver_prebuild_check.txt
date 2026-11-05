@@ -1,0 +1,17 @@
+===== ASM02 DRIVER PRE-BUILD CHECK =====
+KDIR := $(abspath $(CURDIR)/../../LAB01/kernel/linux-5.15)$
+ARCH := arm$
+CROSS_COMPILE := arm-linux-gnueabihf-$
+$
+obj-m += sms_sensor_driver.o$
+$
+all:$
+\t$(MAKE) -C $(KDIR) M=$(CURDIR) ARCH=$(ARCH) \\$
+\t\tCROSS_COMPILE=$(CROSS_COMPILE) KCFLAGS="-msoft-float" modules$
+$
+clean:$
+\t$(MAKE) -C $(KDIR) M=$(CURDIR) ARCH=$(ARCH) \\$
+\t\tCROSS_COMPILE=$(CROSS_COMPILE) clean$
+24: * ktime_get() family: read the current time in a multitude of ways,
+67:extern ktime_t ktime_get(void);
+154:	return ktime_to_ns(ktime_get());

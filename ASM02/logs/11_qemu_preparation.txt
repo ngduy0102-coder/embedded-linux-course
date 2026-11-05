@@ -1,0 +1,21 @@
+===== DRIVER MODULE INFO =====
+filename:       /home/duy/embedded_linux_course/ASM02/driver/sms_sensor_driver.ko
+version:        1.0
+description:    Sensor Monitoring System Character Driver
+author:         ASM02
+license:        GPL
+srcversion:     1E3774355055CCF179F1EF9
+depends:
+name:           sms_sensor_driver
+vermagic:       5.15.0 SMP mod_unload ARMv7 p2v8
+
+===== EXISTING ASM1 ROOTFS =====
+ls: cannot access '/tmp/asm1_rootfs': No such file or directory
+find: ‘/tmp/asm1_rootfs’: No such file or directory
+
+===== EXISTING INITRAMFS =====
+ls: cannot access '/tmp/asm1_initramfs.cpio.gz': No such file or directory
+
+===== KERNEL AND DTB =====
+-rwxrwxr-x 1 duy duy 4.9M Oct 27 10:07 LAB01/output/zImage
+-rw-rw-r-- 1 duy duy 14K Oct 27 10:07 LAB01/output/vexpress-v2p-ca9.dtb

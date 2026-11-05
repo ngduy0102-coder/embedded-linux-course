@@ -1,0 +1,26 @@
+===== INITTAB =====
+::sysinit:/etc/init.d/rcS
+::askfirst:-/bin/sh
+::ctrlaltdel:/sbin/reboot
+::shutdown:/sbin/swapoff -a
+::shutdown:/bin/umount -a -r
+::restart:/sbin/init
+
+===== INIT.D =====
+ASM02/output/rootfs/etc/init.d/rcS
+
+===== INIT.D CONTENTS =====
+--- ASM02/output/rootfs/etc/init.d/rcS ---
+#!/bin/sh
+
+mount -t proc none /proc
+mount -t sysfs none /sys
+mount -t tmpfs none /tmp
+
+echo 'Boot completed! Welcome to Embedded Linux Lab 1'
+hostname embedded-lab
+
+===== INIT AND SHELL LINKS =====
+-rwxrwxr-x 1 duy duy 78 Oct 26 11:36 ASM02/output/rootfs/init
+lrwxrwxrwx 1 duy duy 14 Oct 26 11:33 ASM02/output/rootfs/sbin/init -> ../bin/busybox
+lrwxrwxrwx 1 duy duy 7 Oct 26 11:33 ASM02/output/rootfs/bin/sh -> busybox

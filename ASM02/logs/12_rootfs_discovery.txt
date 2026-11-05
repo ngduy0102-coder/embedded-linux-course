@@ -1,0 +1,29 @@
+===== REPOSITORY ROOTFS / OUTPUT =====
+./LAB03/rootfs
+./LAB03/output
+./LAB02/rootfs
+./LAB02/output
+./LAB01/rootfs
+./LAB01/rootfs/initramfs
+./LAB01/output
+./ASM02/output
+
+===== EXISTING INIT / BUSYBOX =====
+./LAB03/rootfs/init
+./LAB03/rootfs/bin/busybox
+./LAB03/output/initramfs.cpio.gz.bak
+./LAB03/output/initramfs.cpio.gz
+./LAB02/rootfs/init
+./LAB02/rootfs/bin/busybox
+./LAB02/output/initramfs.cpio.gz
+./LAB01/rootfs/busybox-1.35.0/busybox
+./LAB01/rootfs/initramfs/init
+./LAB01/rootfs/initramfs/bin/busybox
+./LAB01/kernel/linux-5.15/usr/initramfs_data.cpio
+./LAB01/output/initramfs.cpio.gz
+
+===== BUSYBOX ARM AVAILABILITY =====
+/usr/bin/busybox
+
+===== QEMU AVAILABILITY =====
+/usr/bin/qemu-system-arm

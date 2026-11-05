@@ -1,0 +1,201 @@
+===== LAB01 INITRAMFS STRUCTURE =====
+total 44K
+drwxrwxr-x 10 duy duy 4.0K Oct 26 11:36 .
+drwxrwxr-x  4 duy duy 4.0K Oct 26 11:34 ..
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 bin
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:40 dev
+drwxrwxr-x  3 duy duy 4.0K Oct 26 11:41 etc
+-rwxrwxr-x  1 duy duy   78 Oct 26 11:36 init
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 proc
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 sbin
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 sys
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 tmp
+drwxrwxr-x  4 duy duy 4.0K Oct 26 11:34 usr
+total 1.6M
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 .
+drwxrwxr-x 10 duy duy 4.0K Oct 26 11:36 ..
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 arch -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ash -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 base32 -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 base64 -> busybox
+-rwxr-xr-x  1 duy duy 1.6M Oct 26 11:33 busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 cat -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 chattr -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 chgrp -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 chmod -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 chown -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 conspy -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 cp -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 cpio -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 cttyhack -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 date -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 dd -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 df -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 dmesg -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 dnsdomainname -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 dumpkmap -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 echo -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ed -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 egrep -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 false -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 fatattr -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 fdflush -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 fgrep -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 fsync -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 getopt -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 grep -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 gunzip -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 gzip -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 hostname -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 hush -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ionice -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 iostat -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ipcalc -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 kbd_mode -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 kill -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 link -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 linux32 -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 linux64 -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ln -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 login -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ls -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 lsattr -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 lzop -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 makemime -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mkdir -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mknod -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mktemp -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 more -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mount -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mountpoint -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mpstat -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mt -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 mv -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 netstat -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 nice -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 pidof -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ping -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ping6 -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 pipe_progress -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 printenv -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 ps -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 pwd -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 reformime -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 resume -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 rev -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 rm -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 rmdir -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 rpm -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 run-parts -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 scriptreplay -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 sed -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 setarch -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 setpriv -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 setserial -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 sh -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 sleep -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 stat -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 stty -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 su -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 sync -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 tar -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 touch -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 true -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 umount -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 uname -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 usleep -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 vi -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 watch -> busybox
+lrwxrwxrwx  1 duy duy    7 Oct 26 11:33 zcat -> busybox
+total 8.0K
+drwxrwxr-x  2 duy duy 4.0K Oct 26 11:34 .
+drwxrwxr-x 10 duy duy 4.0K Oct 26 11:36 ..
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 acpid -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 adjtimex -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 arp -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 blkid -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 blockdev -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 bootchartd -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 depmod -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 devmem -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 fbsplash -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 fdisk -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 findfs -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 freeramdisk -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 fsck -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 fsck.minix -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 fstrim -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 getty -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 halt -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 hdparm -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 hwclock -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ifconfig -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ifdown -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ifenslave -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ifup -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 init -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 insmod -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ip -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ipaddr -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 iplink -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 ipneigh -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 iproute -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 iprule -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 iptunnel -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 klogd -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 loadkmap -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 logread -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 losetup -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 lsmod -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 makedevs -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mdev -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mkdosfs -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mke2fs -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mkfs.ext2 -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mkfs.minix -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mkfs.vfat -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 mkswap -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 modinfo -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 modprobe -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 nameif -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 pivot_root -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 poweroff -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 raidautorun -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 reboot -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 rmmod -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 route -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 run-init -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 runlevel -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 setconsole -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 slattach -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 start-stop-daemon -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 sulogin -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 swapoff -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 swapon -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 switch_root -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 sysctl -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 syslogd -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 tunctl -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 udhcpc -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 uevent -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 vconfig -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 watchdog -> ../bin/busybox
+lrwxrwxrwx  1 duy duy   14 Oct 26 11:33 zcip -> ../bin/busybox
+
+===== INIT SCRIPT =====
+#!/bin/sh
+
+mount -t proc none /proc
+mount -t sysfs none /sys
+
+exec /sbin/init
+
+===== BUSYBOX ARCHITECTURE =====
+LAB01/rootfs/initramfs/bin/busybox: ELF 32-bit LSB executable, ARM, EABI5 version 1 (GNU/Linux), statically linked, BuildID[sha1]=e162e5e4fb5947486532b035a3f71fc2cc226880, for GNU/Linux 3.2.0, stripped
+
+===== EXISTING MODULES =====
+
+===== ASM02 OUTPUT =====
+total 8.0K
+drwxrwxr-x 2 duy duy 4.0K Nov  4 11:18 .
+drwxrwxr-x 6 duy duy 4.0K Nov  4 11:18 ..
