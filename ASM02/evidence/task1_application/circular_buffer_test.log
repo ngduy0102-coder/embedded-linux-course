@@ -1,0 +1,57 @@
+===== ASM02 TASK 1: CIRCULAR BUFFER TEST =====
+Thu Nov  5 09:37:10 PM +07 2026
+
+===== COMPILER =====
+gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
+
+===== STRICT BUILD =====
+PASS: Strict compilation
+
+===== FUNCTIONAL TEST =====
+PASS: Initialize buffer
+PASS: Push first sample
+PASS: Push second sample
+PASS: Detect full buffer
+PASS: Read buffer statistics
+PASS: Buffer size is 2
+PASS: Produced count is 2
+PASS: Overflow count is 1
+PASS: Pop first sample
+PASS: FIFO order: first sample
+PASS: Pop second sample
+PASS: FIFO order: second sample
+PASS: Create waiting consumer
+PASS: Close buffer and wake consumer
+PASS: Join consumer thread
+PASS: Consumer receives CB_CLOSED
+PASS: Reject push after close
+PASS: Read final statistics
+PASS: Consumed count is 2
+
+ALL CIRCULAR BUFFER TESTS PASSED
+
+===== ASAN + UBSAN BUILD =====
+PASS: Sanitizer compilation
+
+===== ASAN + UBSAN TEST =====
+PASS: Initialize buffer
+PASS: Push first sample
+PASS: Push second sample
+PASS: Detect full buffer
+PASS: Read buffer statistics
+PASS: Buffer size is 2
+PASS: Produced count is 2
+PASS: Overflow count is 1
+PASS: Pop first sample
+PASS: FIFO order: first sample
+PASS: Pop second sample
+PASS: FIFO order: second sample
+PASS: Create waiting consumer
+PASS: Close buffer and wake consumer
+PASS: Join consumer thread
+PASS: Consumer receives CB_CLOSED
+PASS: Reject push after close
+PASS: Read final statistics
+PASS: Consumed count is 2
+
+ALL CIRCULAR BUFFER TESTS PASSED
