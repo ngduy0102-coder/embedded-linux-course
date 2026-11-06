@@ -1,0 +1,49 @@
+ASM02 TASK 3 - SYSTEM CALL PROFILING
+
+Tool: strace
+Command: strace -f -c
+Duration: 30 seconds
+Application: sms_app_host
+Sampling interval: 500 ms
+
+TOP 5 SYSTEM CALLS
+
+1. clock_nanosleep
+   Calls: 361
+   Time: 38.90%
+   Purpose: Sensor sampling interval and thread sleeping.
+
+2. mq_timedreceive
+   Calls: 199
+   Time: 36.19%
+   Purpose: Receiving messages from POSIX message queues.
+
+3. futex
+   Calls: 234
+   Time: 19.76%
+   Purpose: Thread synchronization.
+
+4. mq_timedsend
+   Calls: 193
+   Time: 2.26%
+   Purpose: Sending messages through POSIX message queues.
+
+5. write
+   Calls: 74
+   Time: 1.68%
+   Purpose: Writing application log and alert output.
+
+TOTAL SYSTEM CALLS: 1278
+REPORTED ERRORS: 28
+
+APPLICATION RESULT
+Produced: 61
+Consumed: 61
+Overflow: 0
+Remaining: 0
+Exit status: 0
+
+Conclusion:
+The application completed normally. The most frequent system calls
+are related to periodic sleeping, message queue communication, and
+thread synchronization.
