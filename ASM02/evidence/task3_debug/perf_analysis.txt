@@ -1,0 +1,82 @@
+ASM02 TASK 3 - CPU PROFILING ANALYSIS
+
+Tool: Linux perf 7.0.14
+Target: sms_app_perf
+Build flags: -g -O2 -fno-omit-frame-pointer
+Platform: Ubuntu x86-64 (host simulation)
+Event: cpu-clock:u
+Sampling frequency: 999 Hz
+Duration: 30 seconds
+Sensor interval: 10 ms
+
+1. PROFILING RESULTS
+
+Total samples: 236
+Lost samples: 0
+
+Application statistics:
+- Samples produced: 2878
+- Samples consumed: 2878
+- Buffer overflow: 0
+- Remaining samples: 0
+- Application exited normally.
+
+2. CPU CALL GRAPH OBSERVATIONS
+
+Logger Thread: 45.34% Children
+- Highest observed thread contribution.
+- write_data_log() and write_alert_log() format log messages.
+- fprintf() and floating-point formatting are significant operations.
+
+Alert Thread: 22.03% Children
+- Processes alarm messages.
+- Formats and forwards alert information to Logger Thread.
+
+Sensor Thread: 11.86% Children
+- Generates sensor samples in host simulation.
+- Reads timestamps and pushes samples into Circular Buffer.
+
+Processor Thread: 8.47% Children
+- Consumes samples through cb_pop().
+- Uses pthread_cond_wait() when waiting for data.
+- Sends alarm messages through POSIX message queues.
+
+Other observed functions:
+- check_log_rotation()
+- send_alarm()
+- cb_push()
+- cb_pop()
+- clock_gettime()
+
+3. ANALYSIS
+
+The Logger Thread has the largest observed call-graph contribution.
+Floating-point formatting and log message generation are notable
+areas for potential optimization.
+
+The Alert Thread also contributes to processing overhead because
+it formats and forwards alert messages.
+
+The Processor Thread spends part of its execution waiting for
+sensor data through the condition variable. This is expected
+behavior and does not by itself indicate a performance problem.
+
+The call-graph Children percentages include time in descendant
+functions. They must not be added together as independent CPU
+percentages.
+
+4. LIMITATIONS
+
+- Profiling was performed on the x86-64 host.
+- sensor_thread_host.c was used instead of the ARM hardware driver.
+- 236 samples were collected; results indicate observed activity
+  but are not sufficient for precise micro-optimization conclusions.
+- Results should not be interpreted as ARM target performance.
+
+5. CONCLUSION
+
+Perf successfully recorded and reported CPU call-graph data.
+No lost samples were reported.
+The Logger Thread showed the largest observed contribution,
+with log formatting identified as a potential optimization area.
+
