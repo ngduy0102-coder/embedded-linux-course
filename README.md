@@ -161,6 +161,8 @@ embedded_linux_course/
     │   └── task4_realtime/
     ├── logs/
     └── output/
+```
+
 # 3. LAB01 - EMBEDDED LINUX ENVIRONMENT AND KERNEL BUILD
 
 ## 3.1 Overview
