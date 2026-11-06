@@ -1,0 +1,38 @@
+ASM02 TASK 2 - QEMU MEMORY TEST
+
+Application: sms_app
+Capture times: T=5s, T=30s, T=55s
+
+===== MEMORY STATUS =====
+Name: sms_app
+VmSize: 34552 kB
+VmRSS: 4 kB
+VmData: 33052 kB
+VmStk: 132 kB
+Threads: 5
+
+===== MEMORY MAPS =====
+00010000-0007d000 r-xp 00000000 00:02 238        /usr/bin/sms_app
+0008d000-00090000 r--p 0006d000 00:02 238        /usr/bin/sms_app
+00090000-00092000 rw-p 00070000 00:02 238        /usr/bin/sms_app
+00092000-000b6000 rw-p 00000000 00:00 0          [heap]
+74e00000-74e21000 rw-p 00000000 00:00 0
+74e21000-74f00000 ---p 00000000 00:00 0
+74f76000-74f77000 ---p 00000000 00:00 0
+74f77000-75777000 rw-p 00000000 00:00 0
+75777000-75778000 ---p 00000000 00:00 0
+75778000-75f78000 rw-p 00000000 00:00 0
+75f78000-75f79000 ---p 00000000 00:00 0
+75f79000-76779000 rw-p 00000000 00:00 0
+76779000-7677a000 ---p 00000000 00:00 0
+7677a000-76f7a000 rw-p 00000000 00:00 0
+7e7f2000-7e813000 rw-p 00000000 00:00 0 [stack]
+7ea40000-7ea41000 r-xp 00000000 00:00 0 [sigpage]
+7ea41000-7ea42000 r--p 00000000 00:00 0 [vvar]
+7ea42000-7ea43000 r-xp 00000000 00:00 0 [vdso]
+ffff0000-ffff1000 r-xp 00000000 00:00 0 [vectors]
+
+===== COMPARISON =====
+diff T5 vs T30: no differences
+diff T30 vs T55: no differences
+Memory map entries: 19 at all three capture times.

@@ -1,0 +1,19 @@
+ASM02 TASK 2 - DRIVER READ COUNT TEST
+
+Environment: QEMU ARM
+Application: sms_app
+Duration: 60 seconds
+Sampling interval: 500 ms
+
+Read count before: 135
+Read count after: 260
+Read count delta: 125
+
+Expected range: 110-130 (120 +/- 10)
+Application exit code: 0
+Buffer produced: 125
+Buffer consumed: 125
+Buffer overflow: 0
+Buffer remaining: 0
+
+Result: PASS
