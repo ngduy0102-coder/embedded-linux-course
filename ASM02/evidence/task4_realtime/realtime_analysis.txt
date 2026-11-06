@@ -1,0 +1,59 @@
+REAL-TIME JITTER ANALYSIS
+=========================
+
+Test configuration:
+- Samples: 1000 per scheduling policy
+- Sampling period: 1 ms
+- Clock: CLOCK_MONOTONIC
+- Sleep method: clock_nanosleep with TIMER_ABSTIME
+- Memory locking: mlockall(MCL_CURRENT | MCL_FUTURE)
+- SCHED_FIFO priority: 50
+
+1. SCHED_OTHER
+- Min: 54.42 us
+- Average: 73.59 us
+- Max: 134.56 us
+- P99: 109.35 us
+- Histogram:
+  0-100 us:       851
+  100-500 us:     149
+  500-1000 us:    0
+  >1000 us:       0
+
+2. SCHED_FIFO
+- Priority: 50
+- Min: 1.42 us
+- Average: 34.86 us
+- Max: 1107.44 us
+- P99: 203.75 us
+- Histogram:
+  0-100 us:       853
+  100-500 us:     146
+  500-1000 us:    0
+  >1000 us:       1
+
+3. Comparison and observations
+
+SCHED_FIFO reduced average jitter from 73.59 us to
+34.86 us, an improvement of approximately 52.6%.
+
+The minimum jitter also improved significantly.
+However, SCHED_FIFO had a higher P99 jitter
+(203.75 us compared with 109.35 us) and one outlier
+above 1 ms.
+
+Therefore, SCHED_FIFO improved average wake-up latency
+in this test but did not improve every latency metric.
+The outlier indicates that real-time scheduling does
+not eliminate all sources of scheduling latency.
+
+4. Limitations
+
+Each scheduling policy was measured once with 1000 samples.
+The measurements were performed on a Linux host system,
+not on the ARM QEMU target. Results may vary with system
+load, hardware, kernel configuration, and background tasks.
+
+The results should be interpreted as a comparison under
+the tested conditions, not as a universal guarantee that
+SCHED_FIFO always has lower jitter.

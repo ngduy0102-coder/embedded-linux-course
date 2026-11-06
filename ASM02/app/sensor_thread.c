@@ -13,6 +13,8 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
+#include <pthread.h>
+#include <sched.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -21,15 +23,55 @@
 
 #define SENSOR_LINE_SIZE 128
 
-static void wait_retry_interval(unsigned int interval_ms)
+#define SENSOR_FIFO_PRIORITY 50
+
+static void add_interval(struct timespec *deadline,
+                         unsigned int interval_ms)
 {
-    struct timespec delay;
+    deadline->tv_sec += interval_ms / 1000;
+    deadline->tv_nsec += (long)(interval_ms % 1000) * 1000000L;
 
-    delay.tv_sec = interval_ms / 1000;
-    delay.tv_nsec = (long)(interval_ms % 1000) * 1000000L;
+    if (deadline->tv_nsec >= 1000000000L) {
+        deadline->tv_sec++;
+        deadline->tv_nsec -= 1000000000L;
+    }
+}
 
-    while (nanosleep(&delay, &delay) < 0 && errno == EINTR) {
-        /* Resume remaining delay. */
+static int sleep_until_deadline(const struct timespec *deadline,
+                                atomic_bool *stop_requested)
+{
+    int rc;
+
+    while (!atomic_load(stop_requested)) {
+        rc = clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME,
+                             deadline, NULL);
+
+        if (rc == 0)
+            return 0;
+
+        if (rc != EINTR)
+            return rc;
+    }
+
+    return 0;
+}
+
+static void configure_realtime_scheduling(void)
+{
+    struct sched_param param = {0};
+    int rc;
+
+    param.sched_priority = SENSOR_FIFO_PRIORITY;
+
+    rc = pthread_setschedparam(pthread_self(), SCHED_FIFO, &param);
+
+    if (rc == 0) {
+        printf("[SENSOR] Scheduling: SCHED_FIFO, priority %d\n",
+               SENSOR_FIFO_PRIORITY);
+    } else {
+        fprintf(stderr,
+                "[WARN] SCHED_FIFO priority %d unavailable: %s\n",
+                SENSOR_FIFO_PRIORITY, strerror(rc));
     }
 }
 
@@ -61,21 +103,29 @@ void *sensor_thread_main(void *arg)
     int fd;
     sms_u32 interval;
     char line[SENSOR_LINE_SIZE];
+    struct timespec next_deadline = {0};
+    bool deadline_valid = false;
 
     if (ctx == NULL || ctx->cb == NULL ||
         ctx->stop_requested == NULL ||
         ctx->interval_ms < SMS_MIN_INTERVAL_MS) {
-        if (ctx != NULL)
+        if (ctx != NULL) {
             ctx->error_code = EINVAL;
+            if (ctx->cb != NULL)
+                cb_close(ctx->cb);
+        }
         return NULL;
     }
 
     ctx->error_code = 0;
 
+    configure_realtime_scheduling();
+
     fd = open(SMS_SENSOR_DEVICE, O_RDONLY);
     if (fd < 0) {
         ctx->error_code = errno;
         perror("Sensor: open device");
+        cb_close(ctx->cb);
         return NULL;
     }
 
@@ -85,6 +135,7 @@ void *sensor_thread_main(void *arg)
         ctx->error_code = errno;
         perror("Sensor: set interval");
         close(fd);
+        cb_close(ctx->cb);
         return NULL;
     }
 
@@ -92,6 +143,21 @@ void *sensor_thread_main(void *arg)
         ssize_t n;
         SensorData sample;
         CBStatus status;
+        int sleep_rc;
+
+        if (deadline_valid) {
+            sleep_rc = sleep_until_deadline(&next_deadline,
+                                            ctx->stop_requested);
+            if (sleep_rc != 0) {
+                ctx->error_code = sleep_rc;
+                fprintf(stderr, "Sensor: clock_nanosleep: %s\n",
+                        strerror(sleep_rc));
+                break;
+            }
+
+            if (atomic_load(ctx->stop_requested))
+                break;
+        }
 
         n = read(fd, line, sizeof(line) - 1);
 
@@ -100,7 +166,25 @@ void *sensor_thread_main(void *arg)
                 continue;
 
             if (errno == EAGAIN) {
-                wait_retry_interval(ctx->interval_ms);
+                /*
+                 * The driver may reject a read slightly before its
+                 * interval expires. Retry shortly without adding a
+                 * full sampling period.
+                 */
+                if (clock_gettime(CLOCK_MONOTONIC,
+                                  &next_deadline) < 0) {
+                    ctx->error_code = errno;
+                    perror("Sensor: clock_gettime");
+                    break;
+                }
+
+                next_deadline.tv_nsec += 1000000L; /* 1 ms */
+                if (next_deadline.tv_nsec >= 1000000000L) {
+                    next_deadline.tv_sec++;
+                    next_deadline.tv_nsec -= 1000000000L;
+                }
+
+                deadline_valid = true;
                 continue;
             }
 
@@ -127,29 +211,35 @@ void *sensor_thread_main(void *arg)
         if (status == CB_FULL) {
             fprintf(stderr,
                     "[WARN] Circular buffer full; sample dropped\n");
-            continue;
-        }
-
-        if (status == CB_CLOSED) {
+        } else if (status == CB_CLOSED) {
             break;
-        }
-
-        if (status != CB_OK) {
+        } else if (status != CB_OK) {
             ctx->error_code = EIO;
             fprintf(stderr, "Sensor: circular buffer error\n");
             break;
-        }
-
-        if (ctx->verbose) {
+        } else if (ctx->verbose) {
             printf("[SENSOR] timestamp=%llu temp=%.2f humidity=%.2f\n",
                    (unsigned long long)sample.timestamp_ms,
                    sample.temperature,
                    sample.humidity);
         }
+
+        if (!deadline_valid) {
+            if (clock_gettime(CLOCK_MONOTONIC, &next_deadline) < 0) {
+                ctx->error_code = errno;
+                perror("Sensor: clock_gettime");
+                break;
+            }
+            deadline_valid = true;
+        }
+
+        add_interval(&next_deadline, ctx->interval_ms);
     }
 
     if (close(fd) < 0 && ctx->error_code == 0)
         ctx->error_code = errno;
+
+    cb_close(ctx->cb);
 
     return NULL;
 }

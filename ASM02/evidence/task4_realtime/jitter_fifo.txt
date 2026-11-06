@@ -1,0 +1,18 @@
+mlockall: SUCCESS
+
+Mode: SCHED_FIFO
+Priority: 50
+Samples: 1000
+Period: 1 ms
+
+===== JITTER RESULTS =====
+Min:     1.42 us
+Average: 34.86 us
+Max:     1107.44 us
+P99:     203.75 us
+
+===== HISTOGRAM =====
+0-100 us:       853
+100-500 us:     146
+500-1000 us:    0
+>1000 us:       1

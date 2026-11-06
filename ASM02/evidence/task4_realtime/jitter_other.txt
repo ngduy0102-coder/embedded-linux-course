@@ -1,0 +1,18 @@
+mlockall: SUCCESS
+
+Mode: SCHED_OTHER
+Priority: 0
+Samples: 1000
+Period: 1 ms
+
+===== JITTER RESULTS =====
+Min:     54.42 us
+Average: 73.59 us
+Max:     134.56 us
+P99:     109.35 us
+
+===== HISTOGRAM =====
+0-100 us:       851
+100-500 us:     149
+500-1000 us:    0
+>1000 us:       0
