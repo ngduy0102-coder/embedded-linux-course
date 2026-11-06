@@ -1,5 +1,5 @@
 # EMBEDDED LINUX COURSE
-## LAB01-LAB02–LAB03, ASM01–ASM02 — Embedded Linux
+## LAB01–LAB03, ASM01–ASM02 — Embedded Linux
 
 This document summarizes the development environment, implementation, architecture, build procedures, testing, and recorded results of LAB01, LAB02, LAB03, ASM01, and ASM02.
 
@@ -1148,4 +1148,4 @@ Before reproducing a test:
 
 ---
 
-# END OF EMBEDDED LINUX COURSE DOCUMENTATION
+*End of Embedded Linux Course Documentation.*
