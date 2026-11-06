@@ -1,9 +1,9 @@
 # EMBEDDED LINUX COURSE
-## ASM01 & ASM02 — Linux Kernel Drivers and Embedded Applications
+## LAB01–LAB03, ASM01–ASM02 — Embedded Linux
 
-This document summarizes the implementation, architecture, build instructions, test procedures, and recorded results of ASM01 and ASM02.
+This document summarizes the development environment, implementation, architecture, build procedures, testing, and recorded results of LAB01, LAB02, LAB03, ASM01, and ASM02.
 
-The scope of this README is limited to **ASM01** and **ASM02**. LAB01, LAB02, and LAB03 documentation can be integrated into a repository-level README later.
+This repository-level README brings together the five practical assignments. Individual LAB and ASM directories retain their own README files and supporting evidence.
 
 ---
 
@@ -11,23 +11,35 @@ The scope of this README is limited to **ASM01** and **ASM02**. LAB01, LAB02, an
 
 - [1. Development Environment](#1-development-environment)
 - [2. Repository Structure](#2-repository-structure)
-- [3. ASM01 - IOCTL and Miscellaneous Device Drivers](#3-asm01---ioctl-and-miscellaneous-device-drivers)
+- [3. LAB01 - Embedded Linux Environment and Kernel Build](#3-lab01---embedded-linux-environment-and-kernel-build)
   - [3.1 Overview](#31-overview)
-  - [3.2 Task 1 - IOCTL Character Driver](#32-task-1---ioctl-character-driver)
-  - [3.3 Task 2 - Miscellaneous Counter Driver](#33-task-2---miscellaneous-counter-driver)
-  - [3.4 Build and Test ASM01](#34-build-and-test-asm01)
-  - [3.5 ASM01 Test Results](#35-asm01-test-results)
-- [4. ASM02 - Sensor Monitoring and Real-Time Application](#4-asm02---sensor-monitoring-and-real-time-application)
-  - [4.1 Overview](#41-overview)
-  - [4.2 Task 1 - Sensor Driver and Multithreaded Application](#42-task-1---sensor-driver-and-multithreaded-application)
-  - [4.3 Task 2 - POSIX Message Queues and Memory Analysis](#43-task-2---posix-message-queues-and-memory-analysis)
-  - [4.4 Task 3 - Debugging and Performance Analysis](#44-task-3---debugging-and-performance-analysis)
-  - [4.5 Task 4 - Real-Time Scheduling and Jitter Benchmark](#45-task-4---real-time-scheduling-and-jitter-benchmark)
-  - [4.6 Build ASM02](#46-build-asm02)
-  - [4.7 ASM02 Test Evidence](#47-asm02-test-evidence)
-- [5. Technical Notes and Measurement Limitations](#5-technical-notes-and-measurement-limitations)
-
----
+  - [3.2 Toolchain and Target Platform](#32-toolchain-and-target-platform)
+  - [3.3 Kernel, Root Filesystem and QEMU](#33-kernel-root-filesystem-and-qemu)
+- [4. LAB02 - Character Device Driver and NAND Filesystem](#4-lab02---character-device-driver-and-nand-filesystem)
+  - [4.1 Character Device Driver](#41-character-device-driver)
+  - [4.2 Procfs and Sysfs Interfaces](#42-procfs-and-sysfs-interfaces)
+  - [4.3 NAND Simulation and JFFS2](#43-nand-simulation-and-jffs2)
+  - [4.4 Boot Integration and Testing](#44-boot-integration-and-testing)
+- [5. LAB03 - Debugging, Profiling and Real-Time Analysis](#5-lab03---debugging-profiling-and-real-time-analysis)
+  - [5.1 GDB Debugging](#51-gdb-debugging)
+  - [5.2 Memory Analysis with Valgrind](#52-memory-analysis-with-valgrind)
+  - [5.3 System Call and Performance Analysis](#53-system-call-and-performance-analysis)
+  - [5.4 Real-Time Latency Analysis](#54-real-time-latency-analysis)
+- [6. ASM01 - IOCTL and Miscellaneous Device Drivers](#6-asm01---ioctl-and-miscellaneous-device-drivers)
+  - [6.1 Overview](#61-overview)
+  - [6.2 Task 1 - IOCTL Character Driver](#62-task-1---ioctl-character-driver)
+  - [6.3 Task 2 - Miscellaneous Counter Driver](#63-task-2---miscellaneous-counter-driver)
+  - [6.4 Build and Test ASM01](#64-build-and-test-asm01)
+  - [6.5 ASM01 Test Results](#65-asm01-test-results)
+- [7. ASM02 - Sensor Monitoring and Real-Time Application](#7-asm02---sensor-monitoring-and-real-time-application)
+  - [7.1 Overview](#71-overview)
+  - [7.2 Task 1 - Sensor Driver and Multithreaded Application](#72-task-1---sensor-driver-and-multithreaded-application)
+  - [7.3 Task 2 - POSIX Message Queues and Memory Analysis](#73-task-2---posix-message-queues-and-memory-analysis)
+  - [7.4 Task 3 - Debugging and Performance Analysis](#74-task-3---debugging-and-performance-analysis)
+  - [7.5 Task 4 - Real-Time Scheduling and Jitter Benchmark](#75-task-4---real-time-scheduling-and-jitter-benchmark)
+  - [7.6 Build ASM02](#76-build-asm02)
+  - [7.7 ASM02 Test Evidence](#77-asm02-test-evidence)
+- [8. Technical Notes and Measurement Limitations](#8-technical-notes-and-measurement-limitations)
 
 # 1. DEVELOPMENT ENVIRONMENT
 
@@ -122,9 +134,174 @@ embedded_linux_course/
 
 ---
 
-# 3. ASM01 - IOCTL AND MISCELLANEOUS DEVICE DRIVERS
+# 3. LAB01 - EMBEDDED LINUX ENVIRONMENT AND KERNEL BUILD
 
 ## 3.1 Overview
+
+LAB01 establishes the Embedded Linux development workspace and prepares a Linux system for an ARM-based target. The work covers the kernel source tree, cross-compilation environment, root filesystem, Initramfs, and QEMU boot process.
+
+The lab verifies that a custom Linux kernel can be built and booted in an emulated ARM environment.
+
+## 3.2 Toolchain and Target Platform
+
+| Component | Configuration |
+|---|---|
+| Host operating system | Ubuntu Linux x86_64 |
+| Cross compiler | `arm-linux-gnueabihf-gcc-11` |
+| Emulator | `qemu-system-arm` |
+| Target architecture | ARMv7-A |
+| CPU model | Cortex-A9 |
+| QEMU machine | `vexpress-a9` |
+| Linux kernel | 5.15.0 |
+
+The ARM cross compiler is used to build target binaries on the x86_64 host. QEMU provides an emulated ARM platform for boot and runtime verification.
+
+## 3.3 Kernel, Root Filesystem and QEMU
+
+The completed workflow includes:
+
+- Preparing the workspace and Git repository.
+- Preparing and configuring the Linux 5.15 kernel source.
+- Building the ARM kernel image.
+- Building BusyBox for the target environment.
+- Creating the root filesystem and Initramfs.
+- Preparing the QEMU machine and device tree.
+- Booting the kernel in QEMU and verifying the userspace environment.
+
+The successful QEMU boot confirms that the kernel image, device tree, and initial userspace filesystem work together in the configured emulated environment.
+
+---
+
+# 4. LAB02 - CHARACTER DEVICE DRIVER AND NAND FILESYSTEM
+
+## 4.1 Character Device Driver
+
+LAB02 implements a Linux character device driver exposed through `/dev/lab2`.
+
+The driver uses major number `240` and implements the standard file operations:
+
+- `open()`
+- `read()`
+- `write()`
+- `release()`
+
+The implementation transfers data between kernel space and user space using the appropriate user-copy APIs. A mutex protects shared driver data against concurrent access.
+
+## 4.2 Procfs and Sysfs Interfaces
+
+The driver exposes runtime information through procfs and sysfs.
+
+| Interface | Purpose |
+|---|---|
+| `/proc/lab2_info` | Displays driver information and runtime status |
+| `buffer_len` | Reports the current buffer length |
+| `open_count` | Reports the number of open operations |
+| `last_data` | Exposes the most recently stored data |
+
+These interfaces provide a way to inspect driver state without adding custom application-specific IOCTL commands.
+
+## 4.3 NAND Simulation and JFFS2
+
+The lab simulates NAND flash storage using the Linux `nandsim` module and uses JFFS2 as the flash filesystem.
+
+The workflow covers:
+
+- Loading and configuring the NAND simulator.
+- Preparing an MTD partition.
+- Erasing the simulated flash using `flash_erase`.
+- Creating a JFFS2 image with `mkfs.jffs2`.
+- Writing the image using `nandwrite`.
+- Mounting the filesystem and checking stored files.
+- Inspecting NAND contents and filesystem behavior.
+
+The NAND dump was also inspected at byte level. The observed JFFS2 magic value `85 19` provides evidence that JFFS2-formatted data was written to the simulated flash.
+
+Persistence was verified within the same NAND simulator session. This should not be interpreted as proof of persistence across every possible simulator reset or reinitialization scenario.
+
+## 4.4 Boot Integration and Testing
+
+The driver is integrated into the target startup process using BusyBox init configuration, including `inittab` and `rcS`.
+
+The boot script loads the driver and prepares the device node so that the device is available after startup.
+
+The lab was tested in the QEMU `vexpress-a9` environment using the ARMv7-A Cortex-A9 target and Linux 5.15. The recorded D5 runtime checks completed successfully.
+
+---
+
+# 5. LAB03 - DEBUGGING, PROFILING AND REAL-TIME ANALYSIS
+
+## 5.1 GDB Debugging
+
+LAB03 uses GDB and remote debugging to inspect application execution and investigate common C programming errors.
+
+The debugging exercises cover:
+
+- Array out-of-bounds access.
+- Use-after-free.
+- Integer overflow.
+- Stepping through program execution.
+- Inspecting variables, memory, and program state.
+
+The exercises demonstrate how runtime debugging can help locate memory and logic errors that may not be obvious from source-code inspection alone.
+
+## 5.2 Memory Analysis with Valgrind
+
+Valgrind is used to detect memory-management problems, including memory leaks and invalid memory operations.
+
+The lab compares problematic and corrected application behavior. It also examines memory usage for ARM-targeted applications.
+
+Memory measurements must be interpreted in context: virtual memory size, resident memory, and heap allocation describe different aspects of process memory usage.
+
+## 5.3 System Call and Performance Analysis
+
+The lab uses `strace` to inspect system calls and `perf` to profile application execution.
+
+Recorded analysis includes:
+
+- System-call tracing and call counts.
+- Identification of frequently used system calls.
+- CPU performance profiling.
+- Comparison of host and ARM-targeted application behavior.
+- Cross-compilation and execution in QEMU.
+
+In the recorded `strace` analysis, 127 system calls were observed. `write()` accounted for 28.00% of the measured system-call time in that run. This percentage describes the recorded workload and is not a universal performance characteristic.
+
+## 5.4 Real-Time Latency Analysis
+
+The real-time analysis uses `cyclictest` under CPU, I/O, and virtual-memory stress generated by `stress-ng`.
+
+Host test configuration:
+
+| Item | Configuration |
+|---|---|
+| Host kernel | Linux `7.0.0-42-generic` |
+| Preemption model | `PREEMPT_DYNAMIC` |
+| PREEMPT_RT | Disabled |
+| Cyclictest threads | 4 |
+| Scheduling policy | `SCHED_FIFO` |
+| Iterations per thread | 10,000 |
+| Stress workload | 12 CPU, 4 I/O, 2 VM workers |
+
+Recorded latency results:
+
+| Thread | Minimum (µs) | Average (µs) | Maximum (µs) |
+|---|---:|---:|---:|
+| 0 | 2 | 3 | 56 |
+| 1 | 2 | 3 | 266 |
+| 2 | 2 | 3 | 212 |
+| 3 | 2 | 3 | 115 |
+
+The histogram recorded 39,998 samples, with approximately 99.98% below 50 µs. Two histogram overflows were reported. The maximum observed latency was 266 µs, so the histogram's displayed range must not be mistaken for the absolute maximum.
+
+The host kernel did not have PREEMPT_RT enabled. Therefore, these measurements are baseline host results and do not constitute a direct PREEMPT_RT versus non-RT comparison. Any PREEMPT_RT discussion is theoretical unless a separate RT-kernel test is performed.
+
+The detailed D1-D5 evidence is stored in `LAB03/evidence/D1_D5_realtime_analysis.txt`. The latency histogram is stored in `LAB03/logs/latency_histogram.png`.
+
+---
+
+# 6. ASM01 - IOCTL AND MISCELLANEOUS DEVICE DRIVERS
+
+## 6.1 Overview
 
 ASM01 focuses on Linux kernel module development and communication between kernel space and user space.
 
@@ -137,7 +314,7 @@ The assignment contains two driver implementations:
 
 Both drivers were built for the ARM target using the Linux kernel build system and tested in the QEMU environment.
 
-## 3.2 Task 1 - IOCTL Character Driver
+## 6.2 Task 1 - IOCTL Character Driver
 
 ### Objective
 
@@ -252,7 +429,7 @@ Recorded test output ends with:
 
 **Task 1 result: PASS.**
 
-## 3.3 Task 2 - Miscellaneous Counter Driver
+## 6.3 Task 2 - Miscellaneous Counter Driver
 
 ### Objective
 
@@ -342,7 +519,7 @@ The recorded log ends with:
 
 The log confirms the individual operations, invalid-input checks, statistics checks, and module unload step completed. The terminal banner says `COMPLETED`, not `ALL TESTS PASSED`, so this README preserves that distinction.
 
-## 3.4 Build and Test ASM01
+## 6.4 Build and Test ASM01
 
 The two tasks are built independently:
 
@@ -360,7 +537,7 @@ The test programs/scripts are intended to run in the ARM Linux test environment 
 
 For a complete test, prepare the target kernel and root filesystem, boot the ARM QEMU system, copy or include the generated module and test application, then load and test the module inside the guest.
 
-## 3.5 ASM01 Test Results
+## 6.5 ASM01 Test Results
 
 | Test area | Recorded result |
 |---|---|
@@ -385,9 +562,9 @@ Evidence files:
 
 ---
 
-# 4. ASM02 - SENSOR MONITORING AND REAL-TIME APPLICATION
+# 7. ASM02 - SENSOR MONITORING AND REAL-TIME APPLICATION
 
-## 4.1 Overview
+## 7.1 Overview
 
 ASM02 develops a sensor monitoring system using a Linux kernel driver and a multithreaded user-space application.
 
@@ -458,7 +635,7 @@ The system demonstrates:
 
 The application uses separate threads for sensor acquisition, processing, alert handling, and logging.
 
-## 4.2 Task 1 - Sensor Driver and Multithreaded Application
+## 7.2 Task 1 - Sensor Driver and Multithreaded Application
 
 ### A. Sensor kernel driver
 
@@ -603,7 +780,7 @@ Two sensor-thread implementations are provided:
 
 This separation allows application logic to be tested on the development host while retaining a driver-based sensor implementation for the ARM target.
 
-## 4.3 Task 2 - POSIX Message Queues and Memory Analysis
+## 7.3 Task 2 - POSIX Message Queues and Memory Analysis
 
 ### POSIX Message Queues
 
@@ -655,7 +832,7 @@ A recorded 60-second integration check compares the sensor driver's read-count c
 
 **Measurement caution:** the recorded memory snapshots show a very small `VmRSS` value relative to `VmSize` and `VmData`. These figures should be treated as the values reported by that specific measurement method and environment, not as a complete measure of the application's physical memory footprint.
 
-## 4.4 Task 3 - Debugging and Performance Analysis
+## 7.4 Task 3 - Debugging and Performance Analysis
 
 ### A. GDB multithreaded debugging
 
@@ -740,7 +917,7 @@ ASM02/evidence/task3_debug/perf_report.txt
 ASM02/evidence/task3_debug/perf.data
 ```
 
-## 4.5 Task 4 - Real-Time Scheduling and Jitter Benchmark
+## 7.5 Task 4 - Real-Time Scheduling and Jitter Benchmark
 
 ### Objective
 
@@ -799,7 +976,7 @@ ASM02/evidence/task4_realtime/jitter_other.txt
 ASM02/evidence/task4_realtime/jitter_fifo.txt
 ```
 
-## 4.6 Build ASM02
+## 7.6 Build ASM02
 
 ### Build the sensor driver
 
@@ -873,7 +1050,7 @@ sudo ./realtime_benchmark fifo
 
 The FIFO test requires permission to use real-time scheduling. The benchmark also reports whether `mlockall()` succeeds.
 
-## 4.7 ASM02 Test Evidence
+## 7.7 ASM02 Test Evidence
 
 Key evidence files:
 
@@ -895,11 +1072,11 @@ The evidence directories also contain supporting test output and analysis files 
 
 ---
 
-# 5. TECHNICAL NOTES AND MEASUREMENT LIMITATIONS
+# 8. TECHNICAL NOTES AND MEASUREMENT LIMITATIONS
 
 To interpret the results correctly, keep the following distinctions in mind.
 
-## 5.1 Host versus ARM target
+## 8.1 Host versus ARM target
 
 Some tests run inside the ARM QEMU guest, while other measurements run natively on the Ubuntu x86_64 host.
 
@@ -914,7 +1091,7 @@ Examples:
 
 A host measurement is useful for analyzing application behavior, but it is not equivalent to a measurement on physical ARM hardware.
 
-## 5.2 SCHED_FIFO interpretation
+## 8.2 SCHED_FIFO interpretation
 
 Real-time scheduling can reduce average wake-up latency under some conditions, but it does not guarantee that every sample will have lower latency.
 
@@ -922,13 +1099,13 @@ The recorded ASM02 benchmark demonstrates this distinction: average jitter impro
 
 A robust real-time evaluation should use repeated runs, report distributions and tail latency, document system load, and control the test environment.
 
-## 5.3 Memory measurement interpretation
+## 8.3 Memory measurement interpretation
 
 Values such as `VmSize`, `VmRSS`, and `VmData` describe different aspects of process memory.
 
 They should not be treated as interchangeable. A very small RSS snapshot does not, by itself, prove that an application has negligible physical memory usage over its full execution.
 
-## 5.4 Evidence and reproducibility
+## 8.4 Evidence and reproducibility
 
 The evidence files are retained under each assignment's `evidence/` directory. Build outputs and temporary test artifacts may be generated locally and may not all be tracked by Git.
 
@@ -944,4 +1121,4 @@ Before reproducing a test:
 
 ---
 
-# END OF ASM01 & ASM02 DOCUMENTATION
+# END OF EMBEDDED LINUX COURSE DOCUMENTATION
