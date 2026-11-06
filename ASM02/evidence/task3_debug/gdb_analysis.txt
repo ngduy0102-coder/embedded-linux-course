@@ -1,0 +1,21 @@
+ASM02 TASK 3 - GDB DEBUGGING
+
+Tool: GNU GDB 17.1
+Build: -g -O0
+Target: sms_app_debug
+Breakpoint: alert_thread_main()
+
+OBSERVATIONS:
+1. GDB successfully stopped at alert_thread_main().
+2. Processor Thread was waiting on pthread_cond_wait()
+   inside cb_pop(), waiting for sensor data.
+3. Logger Thread was waiting on mq_timedreceive().
+4. Alert Thread reached its entry breakpoint.
+5. Sensor Thread was created after the breakpoint snapshot.
+6. All four worker threads exited normally.
+7. Inferior exited normally.
+
+RESULT:
+GDB successfully inspected Alert Thread execution,
+thread synchronization and application shutdown.
+No deadlock was observed during this test.
