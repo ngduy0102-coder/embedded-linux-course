@@ -77,10 +77,43 @@ arm-linux-gnueabihf-
 
 # 2. REPOSITORY STRUCTURE
 
-Relevant source and evidence files:
+The repository contains five main labs and assignments.
+Each directory stores source code, configuration, test evidence,
+and relevant build artifacts.
 
 ```text
 embedded_linux_course/
+│
+├── README.md
+├── .gitignore
+│
+├── LAB01/
+│   ├── README.md
+│   ├── configs/
+│   ├── evidence/
+│   ├── kernel/
+│   ├── rootfs/
+│   ├── uboot/
+│   └── output/
+│
+├── LAB02/
+│   ├── README.md
+│   ├── driver/
+│   ├── rootfs/
+│   ├── jffs2_data/
+│   ├── jffs2_host_data/
+│   ├── evidence/
+│   └── output/
+│
+├── LAB03/
+│   ├── README.md
+│   ├── apps/
+│   ├── scripts/
+│   ├── rootfs/
+│   ├── rt_kernel/
+│   ├── evidence/
+│   ├── logs/
+│   └── output/
 │
 ├── ASM01/
 │   ├── .gitignore
@@ -95,9 +128,7 @@ embedded_linux_course/
 │   │   └── test_counter.sh
 │   └── evidence/
 │       ├── task1/
-│       │   └── task1_test.log
 │       └── task2/
-│           └── task2_test.log
 │
 └── ASM02/
     ├── driver/
@@ -120,7 +151,7 @@ embedded_linux_course/
     │   ├── logger_thread.c
     │   ├── logger_thread.h
     │   ├── realtime_benchmark.c
-    │   └── test_*.c / test_*.sh
+    │   └── test_*.c
     ├── evidence/
     │   ├── task1_application/
     │   ├── task1_driver/
@@ -130,10 +161,6 @@ embedded_linux_course/
     │   └── task4_realtime/
     ├── logs/
     └── output/
-```
-
----
-
 # 3. LAB01 - EMBEDDED LINUX ENVIRONMENT AND KERNEL BUILD
 
 ## 3.1 Overview
